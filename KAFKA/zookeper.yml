@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: zookeeper
+  namespace: mycas
+spec:
+  serviceName: "zookeeper"
+  replicas: 1  # Running in clustered mode
+  selector:
+    matchLabels:
+      app: zookeeper
+  template:
+    metadata:
+      labels:
+        app: zookeeper
+    spec:
+      initContainers:
+        - name: init-myid
+          image: busybox
+          command:
+            - sh
+            - -c
+            - "echo $((${HOSTNAME##*-} + 1)) > /bitnami/zookeeper/data/myid"
+          volumeMounts:
+            - name: data
+              mountPath: /bitnami/zookeeper/data
+      containers:
+        - name: zookeeper
+          image: bitnami/zookeeper:3.9.0
+          ports:
+            - containerPort: 2181
+            - containerPort: 2888
+            - containerPort: 3888
+          env:
+            - name: ALLOW_ANONYMOUS_LOGIN
+              value: "yes"
+#            - name: ZOO_SERVERS
+ #             value: "zookeeper-0.zookeeper:2888:3888 zookeeper-1.zookeeper:2888:3888 zookeeper-2.zookeeper:2888:3888"
+          volumeMounts:
+            - name: data
+              mountPath: /bitnami/zookeeper
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 128Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zookeeper
+  labels:
+    app: zookeeper
+spec:
+  ports:
+    - name: client
+      port: 2181
+      targetPort: 2181
+    - name: follower
+      port: 2888
+      targetPort: 2888
+    - name: election
+      port: 3888
+      targetPort: 3888
+  clusterIP: None  # Headless service for StatefulSet
+  selector:
+    app: zookeeper
