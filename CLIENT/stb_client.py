@@ -4,7 +4,8 @@ import sys
 import pyaes
 import base64
 import time
-import tkinter as tk
+import logging
+import pyarmor
 # Define the multicast group and port
 multicast_group = '224.1.1.1'
 port = 5000
@@ -12,12 +13,22 @@ key = 'qwertyuioplkjhgd'
 start_time = time.time()
 total_bytes = 0
 
+
+logging.basicConfig(
+    level=logging.INFO,  # Set log level
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
+
+logger = logging.getLogger(__name__)
+
+logger.info("Listening on 224.1.1.1 an dport 5000")
 # Create a UDP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
 # Bind the socket to a specific interface and port
 sock.bind(('', port))
-
+logger.info("Bind succesfull")
 # Join the multicast group
 group = socket.inet_aton(multicast_group)
 mreq = struct.pack('4sL', group, socket.INADDR_ANY)
@@ -57,6 +68,7 @@ try:
             # Calculate bytes per second
             bytes_per_sec = total_bytes / elapsed_time
             # Print the result
+            logger.info(f"BW in Kb:, {bytes_per_sec}/1024")
             #print("BW in Kb:", bytes_per_sec/1024)
             # Reset counters and start time
             total_bytes = 0
@@ -69,6 +81,7 @@ except KeyboardInterrupt:
     # Calculate bytes per second
     bytes_per_sec = total_bytes / elapsed_time
     # Print the final result
+    logger.info(f"BW in Kb: {bytes_per_sec}/1024")
     #print("BW in Kb:", bytes_per_sec/1024)
     #print("KeyboardInterrupt: Closing socket.")
     sock.close()
