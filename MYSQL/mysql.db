@@ -1,0 +1,3 @@
+WARNING: --master-data is deprecated and will be removed in a future version. Use --source-data instead.
+Enter password: 
+mysqldump: Got error: 1045: Access denied for user 'root'@'localhost' (using password: YES) when trying to connect
