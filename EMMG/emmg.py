@@ -5,8 +5,15 @@ import mysql.connector
 import pyaes
 import base64
 import os
+import logging
 
+logging.basicConfig(
+    level=logging.INFO,  # Set log level
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
 
+logger = logging.getLogger(__name__)
 
 conf = {
     'bootstrap.servers': '192.168.56.112:9092',
@@ -25,6 +32,7 @@ consumer = Consumer(conf)
 # Subscribe to the topic
 topic = 'topic_mycas'
 consumer.subscribe([topic])
+logger.info(f"Using topic: {topic}")
 
 mysql_connection = mysql.connector.connect(
     host=mysql_host,
@@ -70,7 +78,8 @@ try:
                 continue
             else:
                 # Handle other errors
-                print(f"Error: {msg.error().str()}")
+                logger.info(f"Error: {msg.error().str()}")
+                #print(f"Error: {msg.error().str()}")
                 break
         else:
             # Process the message
@@ -91,7 +100,7 @@ try:
 
 except KeyboardInterrupt:
     # Stop consuming when interrupted
-    pass
+    logger.info("Keyboard Interrpt")
 
 finally:
     # Close the consumer and MySQL connection to release resources
