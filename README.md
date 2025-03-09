@@ -73,3 +73,6 @@ SET SESSION wait_timeout = 60;
 SET GLOBAL interactive_timeout = 600;
 
 
+show slave status;
+show master status;
+
