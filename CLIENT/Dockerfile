@@ -1,28 +1,65 @@
-# Use official Python Alpine image
-FROM python:3.9-alpine3.20
+# --- Stage 1: Build dependencies and obfuscate Python code ---
+FROM python:3.10-alpine AS builder
 
-# Set environment variables to avoid creating .pyc files and to force stdout/stderr to be unbuffered
+# Set environment variables
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
 # Set working directory
 WORKDIR /mycas/CLIENT
 
-# Copy only the requirements file first (for better Docker caching)
+# Install required system packages
+RUN apk add --no-cache \
+    python3-dev py3-pip \
+    build-base libffi-dev musl-dev
+
+# Install dependencies in a virtual environment
 COPY requirements.txt .
+RUN python -m venv /opt/venv \
+    && /opt/venv/bin/pip install --no-cache-dir --upgrade pip setuptools wheel \
+    && /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Install PyArmor for obfuscation
+RUN /opt/venv/bin/pip install --no-cache-dir pyarmor
 
-# Copy the rest of the application files
+# Copy application files
 COPY . .
 
-# Ensure the correct permissions for execution
-RUN chmod +x stb_client.py
+# Ensure the output directory exists before obfuscation
+RUN mkdir -p /mycas/CLIENT/dist
 
-# Use a non-root user for security (optional, but recommended)
+# Obfuscate Python code using PyArmor
+#RUN /opt/venv/bin/pyarmor pack -x " --exclude dist" -O /mycas/CLIENT/dist stb_client.py
+RUN /opt/venv/bin/pyarmor gen -O /mycas/CLIENT/dist stb_client.py
+
+# Remove unnecessary build dependencies to reduce size
+RUN apk del build-base libffi-dev musl-dev
+
+# --- Stage 2: Create a minimal runtime image ---
+FROM python:3.10-alpine
+
+# Set environment variables
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PATH="/opt/venv/bin:$PATH"
+
+# Set working directory
+WORKDIR /mycas/CLIENT
+
+# Install only necessary runtime dependencies
+RUN apk add --no-cache libffi
+
+# Create a non-root user for security
 RUN addgroup -S mycas && adduser -S mycas -G mycas
+
+# Copy only the virtual environment from the builder stage
+COPY --from=builder --chown=mycas:mycas /opt/venv /opt/venv
+
+# Copy only the obfuscated Python files (not the original source code)
+COPY --from=builder --chown=mycas:mycas /mycas/CLIENT/dist /mycas/CLIENT/
+
+# Ensure correct file permissions
 USER mycas
 
-# Default command to run the application
-CMD ["python", "stb_client.py"]
+# Use ENTRYPOINT for better flexibility
+ENTRYPOINT ["python", "/mycas/CLIENT/stb_client.py"]
