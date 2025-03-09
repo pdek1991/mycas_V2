@@ -4,9 +4,19 @@ import mysql.connector.pooling
 import time
 import socket
 import threading
+import logging
+import sys
 
 config = configparser.ConfigParser()
 config.read(r'stage_cycle.ini')
+
+logging.basicConfig(
+    level=logging.INFO,  # Set log level
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
+
+logger = logging.getLogger(__name__)
 
 db_config = {
     "host": "192.168.56.112",
@@ -40,7 +50,8 @@ def cycler(string, multicast_group, port):
         sock.sendto(data, (multicast_group, port))
         #print(f"String '{string}' streamed over multicast IP {multicast_group}:{port}")
     except socket.error as e:
-        print(f"Error: {e}")
+        logger.info(f"Error: {e}")
+        #print(f"Error: {e}")
     finally:
         # Close the socket
         sock.close()
@@ -65,8 +76,9 @@ def osm():
     # Check if current time (in epoch) is less than end time for the emmtype
         if current_time < endtime and current_time < stage_endtime:
             cycler(emmdata, multicast_group, port)
+            logger.info(f"EMM Data: {emmdata}")
             #print(emmdata)
-    print('Cycle osm Done')
+    logger.info("Cycle OSM done")
     time.sleep(cycle_osm)
 
 def adddevice():
@@ -85,7 +97,8 @@ def adddevice():
         if current_time < endtime and current_time < stage_endtime:
             cycler(emmdata, multicast_group, port)
             #print(emmdata)
-    print('Cycle adddevice Done')
+    logger.info('Cycle adddevice Done')
+    
     time.sleep(cycle_adddevice)
 
 def entitlement():
@@ -104,7 +117,8 @@ def entitlement():
         if current_time < endtime and current_time < stage_endtime:
             cycler(emmdata, multicast_group, port)
             #print(emmdata)
-    print('Cycle entitlement Done')        
+   
+    logger.info('Cycle entitlement Done')     
     time.sleep(cycle_entitlement)
 
 

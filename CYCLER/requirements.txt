@@ -1,5 +1,2 @@
-pyaes
 mysql-connector-python
-confluent-kafka
-kafka-python
-prometheus-client
+
