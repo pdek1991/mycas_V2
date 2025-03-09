@@ -1,51 +1,68 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
-  name: mysql-primary
+  name: mycas-mysql
+  namespace: mycas
 spec:
-  replicas: 1
+  serviceName: mysql
+  replicas: 2
   selector:
     matchLabels:
-      app: mysql
-      role: primary
+      app: mycas-mysql
   template:
     metadata:
       labels:
-        app: mysql
-        role: primary
+        app: mycas-mysql
     spec:
+      initContainers:
+        - name: init-mysql-config
+          image: busybox:latest
+          command: ["/bin/sh", "-c"]
+          args:
+            - |
+              POD_INDEX=$(hostname | awk -F'-' '{print $NF}');
+              SERVER_ID=$((POD_INDEX + 1));  # Ensure server-id is always ≥1
+              echo "[mysqld]" > /mnt/config/my.cnf
+              echo "server-id=${SERVER_ID}" >> /mnt/config/my.cnf
+              echo "log-bin=mysql-bin" >> /mnt/config/my.cnf
+              echo "binlog_format=row" >> /mnt/config/my.cnf
+              echo "relay-log=mysql-relay-bin" >> /mnt/config/my.cnf
+              echo "read-only=OFF" >> /mnt/config/my.cnf
+          volumeMounts:
+            - name: config
+              mountPath: /mnt/config
       containers:
-        - name: mysql
+        - name: mycas-mysql
           image: mysql:8.0
           ports:
             - containerPort: 3306
           env:
             - name: MYSQL_ROOT_PASSWORD
-              value: "rootpassword"
-            - name: MYSQL_DATABASE
-              value: "testdb"
+              valueFrom:
+                secretKeyRef:
+                  name: secret-mysql
+                  key: root-password
             - name: MYSQL_REPLICATION_USER
-              value: "repl"
+              value: "read_replica"
             - name: MYSQL_REPLICATION_PASSWORD
-              value: "replpassword"
+              valueFrom:
+                secretKeyRef:
+                  name: secret-mysql
+                  key: repl-password
           volumeMounts:
-            - name: mysql-storage
+            - name: config
+              mountPath: /etc/mysql/conf.d
+            - name: mysql-data
               mountPath: /var/lib/mysql
       volumes:
-        - name: mysql-storage
-          persistentVolumeClaim:
-            claimName: mysql-pvc
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mysql-primary
-spec:
-  selector:
-    app: mysql
-    role: primary
-  ports:
-    - protocol: TCP
-      port: 3306
-      targetPort: 3306
-
+        - name: config
+          emptyDir: {}  # Shared volume for config generation
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: local-path
+        resources:
+          requests:
+            storage: 512Mi
