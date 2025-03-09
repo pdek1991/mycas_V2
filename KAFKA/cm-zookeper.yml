@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: zookeeper-config
+  namespace: mycas
+data:
+  myid: |
+    $(echo $((${HOSTNAME##*-} + 1)))
