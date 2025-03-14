@@ -57,15 +57,8 @@
     
     # Copy only the obfuscated Python files (not the original source code)
     COPY --from=builder --chown=mycas:mycas /mycas/WEB-APP/dist /mycas/WEB-APP/
-    RUN mkdir -p /mycas/WEB-APP/Logs && \
-    chown -R mycas:mycas /mycas/WEB-APP && \
-    chmod -R 770 /mycas/WEB-APP && \
-    chmod -R 770 /mycas/WEB-APP/Logs
-
-
-    COPY templates/index.html templates/index.html
     
-    # Ensure correct file permissionsc
+    # Ensure correct file permissions
     USER mycas
     
     # Use ENTRYPOINT for better flexibility
