@@ -19,10 +19,11 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 db_config = {
-    "host": "192.168.56.112",
+    "host": "mycas-mysql-0.mysql.mycas",
     "user": "omi_user",
     "password": "omi_user",
     "database": "cas",
+    "port": 3306,
 }
 
 connection_pool = mysql.connector.pooling.MySQLConnectionPool(pool_name="my_pool", pool_size=30, **db_config)

@@ -6,6 +6,7 @@ import pyaes
 import base64
 import os
 import logging
+import sys
 
 logging.basicConfig(
     level=logging.INFO,  # Set log level
@@ -16,12 +17,12 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 conf = {
-    'bootstrap.servers': '192.168.56.112:9092',
+    'bootstrap.servers': "kafka-0.kafka.mycas:9092",
     'group.id': 'emmg',
     'auto.offset.reset': 'earliest'
 }
 
-mysql_host = '192.168.56.112'
+mysql_host = "mycas-mysql-0.mysql.mycas"
 mysql_user = 'omi_user'
 mysql_password = 'omi_user'
 mysql_database = 'cas'

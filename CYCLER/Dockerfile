@@ -57,6 +57,7 @@
     
     # Copy only the obfuscated Python files (not the original source code)
     COPY --from=builder --chown=mycas:mycas /mycas/CYCLER/dist /mycas/CYCLER/
+    COPY stage_cycle.ini stage_cycle.ini
     
     # Ensure correct file permissions
     USER mycas

@@ -1,5 +1,6 @@
 pyaes
 mysql-connector-python
 confluent-kafka
+pyarmor
 
 
