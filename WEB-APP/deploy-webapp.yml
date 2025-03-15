@@ -18,8 +18,8 @@ spec:
       containers:
         - name: mycas-webapp
           image: pdek1991/mycas_webapp:v1
-#          imagePullPolicy: Always
-          command: ["/bin/sh", "-c", "sleep 1d"]
+          imagePullPolicy: Always
+#          command: ["/bin/sh", "-c", "sleep 1d"]
           resources:
             requests:
               cpu: "100m"      # Minimum CPU request (0.1 vCPU)
@@ -29,7 +29,17 @@ spec:
               memory: "256Mi"  # Limit to 256MB
           ports:
             - containerPort: 8080  # Flask default port
+
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+              
+            initialDelaySeconds: 5
+            periodSeconds: 10
+
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
@@ -41,5 +51,5 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 8080
-  type: ClusterIP  # Change to NodePort or LoadBalancer if external access is needed
-
+      nodePort: 31310
+  type: NodePort
