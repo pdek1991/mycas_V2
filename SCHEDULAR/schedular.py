@@ -6,7 +6,7 @@ import time
 def delete_expired_rows():
     # Connect to the database
     conn = mysql.connector.connect(
-        host="192.168.56.112",
+        host="mycas-mysql-0.mysql.mycas",
         user="omi_user",
         password="omi_user",
         database="cas",
