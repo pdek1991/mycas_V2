@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mycas-emmg
+  labels:
+    app: mycas-emmg
+spec:
+  replicas: 1  # Single replica
+  selector:
+    matchLabels:
+      app: mycas-emmg
+  template:
+    metadata:
+      name: mycas-emmg
+      labels:
+        app: mycas-emmg
+    spec:
+      containers:
+        - name: mycas-emmg
+          image: pdek1991/mycas_emmg:v1
+          imagePullPolicy: Always
+          #command: ["/bin/sh", "-c", "sleep 1d"]
+          resources:
+            requests:
+              cpu: "100m"      # Minimum CPU request (0.1 vCPU)
+              memory: "128Mi"  # Minimum memory request (128MB)
+            limits:
+              cpu: "250m"      # Limit to 0.25 vCPU
+              memory: "256Mi"  # Limit to 256MB
