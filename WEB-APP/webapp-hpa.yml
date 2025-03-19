@@ -1,0 +1,32 @@
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  namespace: mycas
+  name: webapp-hpa
+spec:
+  maxReplicas: 10
+  minReplicas: 1
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: mycas-webapp
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 90
+  behavior:
+    scaleUp:
+      stabilizationWindowSeconds: 5  # Reduce waiting time before scaling up
+      policies:
+      - type: Percent
+        value: 100  # Allow scaling up to double the pods
+        periodSeconds: 10  # Evaluate every 10 seconds
+    scaleDown:
+      stabilizationWindowSeconds: 5  # Reduce waiting time before scaling down
+      policies:
+      - type: Percent
+        value: 100  # Allow reducing pods by half
+        periodSeconds: 5  # Evaluate every 5 seconds

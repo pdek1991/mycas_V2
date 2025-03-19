@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: mycas
+  name: mycas-cycler
+  labels:
+    app: mycas-cycler
+spec:
+  replicas: 1  # Single replica
+  selector:
+    matchLabels:
+      app: mycas-cycler
+  template:
+    metadata:
+      name: mycas-cycler
+      labels:
+        app: mycas-cycler
+    spec:
+      containers:
+        - name: mycas-cycler
+          image: pdek1991/mycas_cycler:v1
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: mycas-config
+          env:
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mycas-secret
+                  key: DB_PASS
+          #command: ["/bin/sh", "-c", "sleep 1d"]
+          resources:
+            requests:
+              cpu: "50m"      
+              memory: "128Mi"  
+            limits:
+              cpu: "50m"     
+              memory: "128Mi"  
