@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: mycas-client
-          image: pdek1991/mycas_client:v1
+          image: pdek1991/mycas_client:v2
           imagePullPolicy: Always
           envFrom:
             - configMapRef:

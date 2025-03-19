@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mycas-webapp
+  namespace: mycas
   labels:
     app: mycas-webapp
 spec:
@@ -17,16 +18,25 @@ spec:
     spec:
       containers:
         - name: mycas-webapp
-          image: pdek1991/mycas_webapp:v1
+          image: pdek1991/mycas_webapp:v2
           imagePullPolicy: Always
 #          command: ["/bin/sh", "-c", "sleep 1d"]
+          envFrom:
+            - configMapRef:
+                name: mycas-config
+          env:
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mycas-secret
+                  key: DB_PASS
           resources:
             requests:
-              cpu: "100m"      # Minimum CPU request (0.1 vCPU)
-              memory: "128Mi"  # Minimum memory request (128MB)
+              cpu: "100m"      
+              memory: "256Mi" 
             limits:
-              cpu: "250m"      # Limit to 0.25 vCPU
-              memory: "256Mi"  # Limit to 256MB
+              cpu: "200m"      
+              memory: "512Mi" 
           ports:
             - containerPort: 8080  # Flask default port
 

@@ -1,6 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
+  namespace: mycas
   name: mycas-cycler
   labels:
     app: mycas-cycler
@@ -17,13 +18,22 @@ spec:
     spec:
       containers:
         - name: mycas-cycler
-          image: pdek1991/mycas_cycler:v1
+          image: pdek1991/mycas_cycler:v2
           imagePullPolicy: Always
-          command: ["/bin/sh", "-c", "sleep 1d"]
+          envFrom:
+            - configMapRef:
+                name: mycas-config
+          env:
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mycas-secret
+                  key: DB_PASS
+          #command: ["/bin/sh", "-c", "sleep 1d"]
           resources:
             requests:
-              cpu: "100m"      # Minimum CPU request (0.1 vCPU)
-              memory: "128Mi"  # Minimum memory request (128MB)
+              cpu: "50m"      
+              memory: "128Mi"  
             limits:
-              cpu: "250m"      # Limit to 0.25 vCPU
-              memory: "256Mi"  # Limit to 256MB
+              cpu: "50m"     
+              memory: "128Mi"  

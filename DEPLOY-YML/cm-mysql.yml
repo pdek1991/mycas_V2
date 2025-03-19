@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-mysql
+  namespace: mycas
+data:
+  my.cnf: |
+    [mysqld]
+    server-id=${POD_INDEX##*-}  # Extract only the pod index (e.g., "0" from "mycas-mysql-0")
+    log-bin=mysql-bin
+    binlog_format=row
+    relay-log=mysql-relay-bin
+    read-only=OFF

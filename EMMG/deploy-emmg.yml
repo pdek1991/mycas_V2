@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: mycas-emmg
-          image: pdek1991/mycas_emmg:v1
+          image: pdek1991/mycas_emmg:v2
           imagePullPolicy: Always
           #command: ["/bin/sh", "-c", "sleep 1d"]
           envFrom:

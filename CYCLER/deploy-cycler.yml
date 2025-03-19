@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: mycas-cycler
-          image: pdek1991/mycas_cycler:v1
+          image: pdek1991/mycas_cycler:v2
           imagePullPolicy: Always
           envFrom:
             - configMapRef:

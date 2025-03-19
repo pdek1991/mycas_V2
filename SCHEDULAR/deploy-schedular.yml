@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: mycas-schedular
-          image: pdek1991/mycas_schedular:v1
+          image: pdek1991/mycas_schedular:v2
           imagePullPolicy: Always
           envFrom:
             - configMapRef:
