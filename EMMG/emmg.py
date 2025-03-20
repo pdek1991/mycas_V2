@@ -49,10 +49,10 @@ consumer.subscribe([topic])
 logger.info(f"Using topic: {topic}")
 
 mysql_connection = mysql.connector.connect(
-    host=mysql_host,
-    user=mysql_user,
-    password=mysql_password,
-    database=mysql_database
+    host=db_host,
+    user=db_user,
+    password=db_pass,
+    database=db_name
 )
 mysql_cursor = mysql_connection.cursor()
 

@@ -45,7 +45,7 @@ if not db_host or not db_name or not db_pass:
 
 
 try:
-    connection_pool = pooling.MySQLConnectionPool(pool_name="my_pool", pool_size=30, **db_config)
+    connection_pool = pooling.MySQLConnectionPool(pool_name="my_pool", pool_size=10, **db_config)
     logger.info("Database connection pool created successfully.")
 except Error as e:
     logger.info(f"Error while creating MySQL connection pool: {e}")
