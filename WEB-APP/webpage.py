@@ -23,14 +23,14 @@ new_devices = 0
 
 #2025#bootstrap_servers = '192.168.56.112:9092'
 
-db_user = os.getenv("DB_USER", "omi_user")
-db_pass = os.getenv("DB_PASS")		##SECRET
-db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas")
-db_name = os.getenv("DB_NAME")
+db_user = os.getenv("DB_USER", "omi_user").strip()
+db_pass = os.getenv("DB_PASS").strip()		##SECRET
+db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas").strip()
+db_name = os.getenv("DB_NAME").strip()
 db_port = int(os.getenv("DB_PORT", 3306))
-kafka_bootstrap_server = os.getenv("KAFKA_SERVER", "kafka-0.kafka.mycas:9092")
-kafka_group_id = os.getenv("KAFKA_GROUP_ID", "emmg")
-kafka_topic = os.getenv("KAFKA_TOPIC", "topic_mycas")
+kafka_bootstrap_server = os.getenv("KAFKA_SERVER", "kafka-0.kafka.mycas:9092").strip()
+kafka_group_id = os.getenv("KAFKA_GROUP_ID", "emmg").strip()
+kafka_topic = os.getenv("KAFKA_TOPIC", "topic_mycas").strip()
 
 
 bootstrap_servers = kafka_bootstrap_server

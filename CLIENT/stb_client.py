@@ -9,7 +9,7 @@ import pyarmor
 import os
 # Define the multicast group and port
 
-multicast_group = os.getenv("MULTICAST", "224.1.1.1")  
+multicast_group = os.getenv("MULTICAST", "224.1.1.1").strip()
 port = int(os.getenv("PORT", 5000))
 
 key = 'qwertyuioplkjhgd'

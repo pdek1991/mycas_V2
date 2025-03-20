@@ -18,14 +18,14 @@ logger = logging.getLogger(__name__)
 
 
 ##Get ENV from CM and SECRETS
-db_user = os.getenv("DB_USER", "omi_user")
-db_pass = os.getenv("DB_PASS")
-db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas")
-db_name = os.getenv("DB_NAME")
+db_user = os.getenv("DB_USER", "omi_user").strip()
+db_pass = os.getenv("DB_PASS").strip()
+db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas").strip()
+db_name = os.getenv("DB_NAME").strip()
 db_port = int(os.getenv("DB_PORT", 3306))
-kafka_bootstrap_server = os.getenv("KAFKA_SERVER", "kafka-0.kafka.mycas:9092")
-kafka_group_id = os.getenv("KAFKA_GROUP_ID", "emmg")
-kafka_topic = os.getenv("KAFKA_TOPIC", "topic_mycas")
+kafka_bootstrap_server = os.getenv("KAFKA_SERVER", "kafka-0.kafka.mycas:9092").strip()
+kafka_group_id = os.getenv("KAFKA_GROUP_ID", "emmg").strip()
+kafka_topic = os.getenv("KAFKA_TOPIC", "topic_mycas").strip()
 
 
 

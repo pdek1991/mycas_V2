@@ -21,13 +21,13 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 ##Get ENV from CM and SECRETS
-db_user = os.getenv("DB_USER", "omi_user")
-db_pass = os.getenv("DB_PASS")
-db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas")
-db_name = os.getenv("DB_NAME")
+db_user = os.getenv("DB_USER", "omi_user").strip()
+db_pass = os.getenv("DB_PASS").strip()
+db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas").strip()
+db_name = os.getenv("DB_NAME").strip()
 db_port = int(os.getenv("DB_PORT", 3306))
 
-multicast_group = os.getenv("MULTICAST", "224.1.1.1")  
+multicast_group = os.getenv("MULTICAST", "224.1.1.1").strip()  
 multicast_port = int(os.getenv("PORT", 5000))
 
 

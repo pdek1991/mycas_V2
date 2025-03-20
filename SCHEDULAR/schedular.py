@@ -14,10 +14,10 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-db_user = os.getenv("DB_USER", "omi_user")
-db_pass = os.getenv("DB_PASS")		##SECRET
-db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas")
-db_name = os.getenv("DB_NAME")
+db_user = os.getenv("DB_USER", "omi_user").strip()
+db_pass = os.getenv("DB_PASS").strip()		##SECRET
+db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas").strip()
+db_name = os.getenv("DB_NAME").strip()
 db_port = int(os.getenv("DB_PORT", 3306))
 
 
