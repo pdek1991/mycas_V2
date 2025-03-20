@@ -1,138 +1,139 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>REST Interface</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web GUI</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         body {
-            text-align: center;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 0;
+            background: linear-gradient(135deg, #004d7a, #008793);
+            color: white;
+            text-align: center;
         }
-
-       
-        .logo {
-            position: absolute;
-            top: 0px;
-            left: 0px;
-            width: 50px;
-            height: 50px;
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
         }
-
-        .banner-top {
-            position: absolute;
-            top: 0;
-            left: 0;
+        .logo img {
+            width: 100px;
+            margin-top: 20px;
+        }
+        h1 {
+            font-size: 28px;
+        }
+        form {
+            text-align: left;
+            padding: 20px;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+        input {
             width: 100%;
-            height: 100px;
-            background-image: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRT-mpzONNdRWtZ7NKdkLlqTI3lP_IPWtLIUA&usqp=CAU);
-            background-size: cover;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: none;
+            font-size: 16px;
         }
-     
-
         .submit {
-            background-color: darkgreen;
+            width: 100%;
+            background: #ff4b5c;
             color: white;
             font-weight: bold;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: 0.3s;
         }
-
-        h1 {
-            margin-top: 100px;
+        .submit:hover {
+            background: #ff2e44;
         }
-         /* Styling for the pop-up */
-         #popupMessage {
-            position: fixed;
-            top: 5%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #F3FF33;
-            color: rgb(3, 0, 0);
-            padding: 20px;
-            text-align: center;
-            z-index: 9999;
-            border-radius: 10px;
+        .form-container {
+            margin-bottom: 30px;
+        }
+        .flash-message {
+            background: #f3ff33;
+            color: black;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 10px;
         }
     </style>
-        
 </head>
 <body>
-    <div class="banner-top"></div>
-    <h1>SMS-CAS Interface</h1>
+    <div class="container">
+        <div class="logo">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Reliance_Jio_Logo_%28October_2015%29.svg" alt="SMS-CAS Logo">
+        </div>
+        <h1>SMS-CAS Interface</h1>
 
-    <div class="logo">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Reliance_Jio_Logo_%28October_2015%29.svg/900px-Reliance_Jio_Logo_%28October_2015%29.svg.png?20180410170326" alt="SMS-CAS Logo" width="100" height="100">
+        {% with messages = get_flashed_messages() %}
+            {% if messages %}
+                <div class="flash-message">{{ messages[0] }}</div>
+            {% endif %}
+        {% endwith %}
+
+        <div class="form-container">
+            <h2>Generate OSM</h2>
+            <form action="/generate_osm" method="post">
+                <label>Message ID:</label>
+                <input type="text" name="message_id" required>
+
+                <label>Message Text:</label>
+                <input type="text" name="message_text" required>
+
+                <label>Device ID:</label>
+                <input type="text" name="device_id" required>
+
+                <label>Expiry:</label>
+                <input type="date" name="expiry" required>
+
+                <input type="submit" value="Submit" class="submit">
+            </form>
+        </div>
+
+        <div class="form-container">
+            <h2>Add Entitlement</h2>
+            <form action="/addentitlement" method="post">
+                <label>Device ID:</label>
+                <input type="text" name="device_id" required>
+
+                <label>Package IDs (separated by colon):</label>
+                <input type="text" name="package_ids" required>
+
+                <label>Expiry:</label>
+                <input type="date" name="expiry" required>
+
+                <input type="submit" value="Submit" class="submit">
+            </form>
+        </div>
+
+        <div class="form-container">
+            <h2>Device Keys</h2>
+            <form action="/device_keys" method="post">
+                <label>Device ID:</label>
+                <input type="text" name="device_id" required>
+
+                <label>BS Keys:</label>
+                <input type="text" name="bskeys" required>
+
+                <input type="submit" value="Submit" class="submit">
+            </form>
+        </div>
     </div>
-
-    <div class="banner-left"></div>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            // Function to display the pop-up message
-            function displayPopupMessage() {
-                // Get the flash message text from Flask
-                var flashMessage = "{{ get_flashed_messages()|first }}";
-
-                // Create a new div element for the pop-up
-                var popupDiv = $('<div>').attr('id', 'popupMessage')
-                                          .text(flashMessage);
-
-                // Add the pop-up div to the body of the page
-                $('body').prepend(popupDiv);
-
-                // Close the pop-up automatically after 10 seconds
-                setTimeout(function() {
-                    popupDiv.remove();
-                }, 10000);
-            }
-
-            // Call the function to display the pop-up message
-            displayPopupMessage();
-        });
-    </script>
-
-    <h2>Generate OSM</h2>
-    <form action="/generate_osm" method="post">
-        <label for="message_id">Message ID:</label>
-        <input type="text" id="message_id" name="message_id" required><br><br>
-
-        <label for="message_text">Message Text:</label>
-        <input type="text" id="message_text" name="message_text" required><br><br>
-
-        <label for="device_id">Device ID:</label>
-        <input type="text" id="device_id" name="device_id" required><br><br>
-
-        <label for="expiry">Expiry:</label>
-        <input type="date" id="expiry" name="expiry" pattern="\d{4}-\d{2}-\d{2}" required><br><br>
-
-
-        <input type="submit" value="Submit" class="submit">
-    </form>
-
-    <h2>Add Entitlement</h2>
-    <form action="/addentitlement" method="post">
-        <label for="device_id">Device ID:</label>
-        <input type="text" id="device_id" name="device_id" required><br><br>
-
-        <label for="package_ids">Package IDs (separated by colon):</label>
-        <input type="text" id="package_ids" name="package_ids" required><br><br>
-
-        <label for="expiry">Expiry:</label>
-        <input type="date" id="expiry" name="expiry" required><br><br>
-
-        <input type="submit" value="Submit" class="submit">
-    </form>
-
-    <h2>Device Keys</h2>
-    <form action="/device_keys" method="post">
-        <label for="device_id">Device ID:</label>
-        <input type="text" id="device_id" name="device_id" required><br><br>
-
-        <label for="bskeys">BS Keys:</label>
-        <input type="text" id="bskeys" name="bskeys" required><br><br>
-
-        <input type="submit" value="Submit" class="submit">
-    </form>
-
-    <div class="banner"></div>
 </body>
 </html>

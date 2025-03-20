@@ -9,7 +9,7 @@ import logging
 import sys
 
 logging.basicConfig(
-    level=logging.INFO,  # Set log level
+    level=logging.DEBUG,  # Set log level
     format="%(asctime)s - %(levelname)s - %(message)s",
     handlers=[logging.StreamHandler(sys.stdout)]
 )
@@ -75,7 +75,7 @@ def encrypt_string(key, plaintext):
 
     # Encode the ciphertext in base64 for representation
     encrypted_data = base64.b64encode(ciphertext).decode('utf-8')
-
+    logger.info(f"Encrypted Data: {encrypted_data}")
     return encrypted_data
 
 
@@ -83,6 +83,7 @@ try:
     while True:
         # Poll for messages
         msg = consumer.poll(timeout=1.0)
+        #logger.info(f"Kafka Message: {msg}")
 
         if msg is None:
             continue
@@ -100,7 +101,7 @@ try:
             #encrypted_data = encrypt_message(msg.value(), aes_key, aes_iv)
             encrypted_data = encrypt_string(key, msg.value().decode('utf-8'))
             start_time = int(datetime.now().timestamp())
-
+            logger.info(f"Encrypted Data: {encrypted_data}")
             # Parse the last column of the message to extract the date
             last_column = msg.value().decode('utf-8').split(':')[-1].strip()
             date_obj = datetime.strptime(last_column, '%Y-%m-%d')
@@ -109,6 +110,7 @@ try:
             # Save the encrypted data, start time, end time, and other required information to the database
             insert_query = "INSERT INTO emmg (starttime, endtime, emmdata, emmtype) VALUES (%s, %s, %s, %s)"
             data = (start_time, end_time, encrypted_data, emmtype)
+            logger.info(f"start_time, end_time, encrypted_data, emmtype: {data}")
             mysql_cursor.execute(insert_query, data)
             mysql_connection.commit()
 
