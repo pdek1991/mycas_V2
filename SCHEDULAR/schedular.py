@@ -46,12 +46,14 @@ def delete_expired_rows():
             cursor.execute(query, (today,))
             conn.commit()
             deleted_rows = cursor.rowcount
+            logger.info(f"Deleted Total {deleted_rows} Rows from generate_osm and entitlements table")
         elif table == 'emmg':
             # Delete rows where endtime is less than or equal to the current epoch timestamp
             query = f"DELETE FROM {table} WHERE endtime <= %s"
             cursor.execute(query, (epoch,))
             conn.commit()
             deleted_rows = cursor.rowcount
+            logger.info(f"Deleted Total {deleted_rows} Rows from emmg tabel")
 
         # Store the count in the dictionary
         deleted_rows_count[table] = deleted_rows
@@ -65,7 +67,7 @@ def delete_expired_rows():
     return deleted_rows_count
 
 # Schedule the delete_expired_rows() function to run every day at 00:00 hours
-schedule.every().day.at("00:00").do(delete_expired_rows)
+schedule.every(2).minutes.do(delete_expired_rows)
 
 # Run the scheduler
 while True:
