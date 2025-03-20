@@ -63,7 +63,7 @@ try:
         # Receive and process data from the multicast stream
         data, address = sock.recvfrom(1024)
         plaintext = decrypt_string(key, data)
-        if '982334*' in plaintext:
+        if plaintext.startswith("982334"):
             logger.info(f"Received encryoted data: {data} from {address}")
             logger.info(f"Received data: {plaintext}")
             total_bytes += len(data)

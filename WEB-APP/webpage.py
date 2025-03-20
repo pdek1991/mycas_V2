@@ -1,4 +1,3 @@
-
 from flask import Flask, request
 import mysql.connector.pooling
 import logging
@@ -79,7 +78,7 @@ def generate_osm():
     expiry = request.form['expiry']
     topic = kafka_topic 
     emmtype = '44'
-    message = f'{device_id}:{message_id}:{message_text}:{emmtype}:{expiry}'
+    message = f"{device_id}:{message_id}:{message_text}:{emmtype}:{expiry}"
     try:
         producer.send(topic, message.encode('utf-8')).get()
         logger.info(f"Message sent to Kafka topic {topic}: {message}")
@@ -119,7 +118,7 @@ def add_entitlement():
     for package_id in package_ids:
         data = (device_id, package_id, expiry)
         cursor.execute(insert_query, data)
-        message = f'{device_id}:{package_id}:{emmtype}:{expiry}'
+        message = f"{device_id}:{package_id}:{emmtype}:{expiry}"
         try:
             producer.send(topic, message.encode('utf-8')).get()
             logger.info(f"Message sent to Kafka topic {topic}:{message}:{expiry}")
@@ -143,7 +142,7 @@ def device_keys():
     topic = kafka_topic  
     emmtype = '10'
     expiry = '2037-12-31'
-    message = f'{device_id}:{bskeys}:{emmtype}:{expiry}'
+    message = f"{device_id}:{bskeys}:{emmtype}:{expiry}"
     try:
         producer.send(topic, message.encode('utf-8')).get()
         logger.info(f"Message sent to Kafka topic {topic}: {message}")
@@ -176,6 +175,30 @@ def device_keys():
 def success():
     return 'Healthy', 200
 
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    results = None
+    if request.method == 'POST':
+        search_variable = request.form.get('device_id', '').strip()
+
+        # Validate input
+        if not search_variable:
+            return "Error: Please enter a device_id", 400
+
+        # Connect to MySQL
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor()
+
+        # Use parameterized query to prevent SQL injection
+        query = "SELECT package_id, expiry FROM entitlements WHERE device_id LIKE %s"
+        cursor.execute(query, (f"%{search_variable}%",))
+        results = cursor.fetchall()
+
+        cursor.close()
+        connection.close()
+
+    return render_template("search_form.html", results=results)
 
 if __name__ == '__main__':
     #app.run()

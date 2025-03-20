@@ -83,7 +83,7 @@ try:
     while True:
         # Poll for messages
         msg = consumer.poll(timeout=1.0)
-        logger.info(f"Kafka Message: {msg}")
+        #logger.info(f"Kafka Message: {msg}")
 
         if msg is None:
             continue

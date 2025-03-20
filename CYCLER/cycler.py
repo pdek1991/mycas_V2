@@ -83,15 +83,14 @@ def cycler(string, multicast_group, multicast_port):
 
 def osm():
     connection = connection_pool.get_connection()
-    cursor = connection.cursor()
-    cursor.execute("SELECT starttime, endtime, emmdata, emmtype FROM emmg where emmtype = 21 limit 1000")
-    rows = cursor.fetchall()
+    cursor = connection.cursor(buffered=True) 
+    cursor.execute("SELECT starttime, endtime, emmdata, emmtype FROM emmg where emmtype = 21")
+    #rows = cursor.fetchall()
 	
-    cursor.close()
-    connection.close()
+    
     current_time = int(time.time())
     
-    for row in rows:
+    for row in cursor:
         #logger.info(f"starttime, endtime, emmdata, emmtype: {row}")
         starttime, endtime, emmdata, emmtype = row
         #stage_endtime = int(starttime + stage_osm)
@@ -102,20 +101,22 @@ def osm():
         #if current_time < endtime and current_time < stage_endtime:
         if starttime <= stage_endtime <= endtime:
             cycler(emmdata, multicast_group, multicast_port)
-            logger.info(f"EMM Data: {row}")
+            logger.info(f"EMM Data: {emmdata}")
+    cursor.close()
+    connection.close()
     logger.info("Cycle OSM done")
     time.sleep(cycle_osm)
 
 def adddevice():
     connection = connection_pool.get_connection()
-    cursor = connection.cursor()
-    cursor.execute("SELECT starttime, endtime, emmdata, emmtype FROM emmg where emmtype = 10 limit 1000")
-    rows = cursor.fetchall()
-    cursor.close()
-    connection.close()
+    cursor = connection.cursor(buffered=True)
+    cursor.execute("SELECT starttime, endtime, emmdata, emmtype FROM emmg where emmtype = 10")
+    #rows = cursor.fetchall()
+    
     current_time = int(time.time())
     
-    for row in rows:
+    for row in cursor:
+
         starttime, endtime, emmdata, emmtype = row
         stage_endtime = int(starttime + stage_adddevice)
     # Check if current time (in epoch) is less than end time for the emmtype
@@ -124,19 +125,18 @@ def adddevice():
             cycler(emmdata, multicast_group, multicast_port)
             logger.info(f"EMM Data: {emmdata}")
     logger.info('Cycle adddevice Done')
-    
+    cursor.close()
+    connection.close()
     time.sleep(cycle_adddevice)
 
 def entitlement():
     connection = connection_pool.get_connection()
-    cursor = connection.cursor()
-    cursor.execute("SELECT starttime, endtime, emmdata, emmtype FROM emmg where emmtype = 44 limit 1000")
-    rows = cursor.fetchall()
-    cursor.close()
-    connection.close()
+    cursor = connection.cursor(buffered=True)
+    cursor.execute("SELECT starttime, endtime, emmdata, emmtype FROM emmg where emmtype = 44")
+    #rows = cursor.fetchall()
     current_time = int(time.time())
     
-    for row in rows:
+    for row in cursor:
         starttime, endtime, emmdata, emmtype = row
         stage_endtime = int(starttime + stage_entitlement)
         # Check if current time (in epoch) is less than end time for the emmtype
@@ -144,8 +144,10 @@ def entitlement():
         if starttime <= stage_endtime <= endtime:
             cycler(emmdata, multicast_group, multicast_port)
             logger.info(f"EMM Data: {emmdata}")
-   
-    logger.info('Cycle entitlement Done')     
+    cursor.close()
+    connection.close()
+    logger.info('Cycle entitlement Done') 
+        
     time.sleep(cycle_entitlement)
 
 
