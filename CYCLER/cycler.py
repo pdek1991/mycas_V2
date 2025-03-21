@@ -21,14 +21,14 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 ##Get ENV from CM and SECRETS
-db_user = os.getenv("DB_USER", "omi_user")
-db_pass = os.getenv("DB_PASS")
-db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas")
-db_name = os.getenv("DB_NAME")
+db_user = os.getenv("DB_USER", "omi_user").strip()
+db_pass = os.getenv("DB_PASS").strip()
+db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas").strip()
+db_name = os.getenv("DB_NAME").strip()
 db_port = int(os.getenv("DB_PORT", 3306))
 
-multicast_group = os.getenv("MULTICAST", "224.1.1.1")  
-multicast_port = int(os.getenv("PORT", 5000))
+multicast_group = "socket-server.mycas.svc.cluster.local"
+multicast_port = 5050
 
 
 db_config = {
@@ -45,7 +45,7 @@ if not db_host or not db_name or not db_pass:
 
 
 try:
-    connection_pool = pooling.MySQLConnectionPool(pool_name="my_pool", pool_size=30, **db_config)
+    connection_pool = pooling.MySQLConnectionPool(pool_name="my_pool", pool_size=10, **db_config)
     logger.info("Database connection pool created successfully.")
 except Error as e:
     logger.info(f"Error while creating MySQL connection pool: {e}")
@@ -71,7 +71,7 @@ def cycler(string, multicast_group, multicast_port):
     try:
         # Send the data to the multicast group and port
         sock.sendto(data, (multicast_group, multicast_port))
-        logger.info(f"String '{string}' streamed over multicast IP {multicast_group}:{multicast_port}")
+        #logger.info(f"String '{string}' streamed over multicast IP {multicast_group}:{multicast_port}")
     except socket.error as e:
         logger.info(f"Error: {e}")
         #print(f"Error: {e}")
@@ -83,62 +83,71 @@ def cycler(string, multicast_group, multicast_port):
 
 def osm():
     connection = connection_pool.get_connection()
-    cursor = connection.cursor()
-    cursor.execute("SELECT starttime, endtime, emmdata, emmtype FROM emmg where emmtype = 21 limit 1000")
-    rows = cursor.fetchall()
-    cursor.close()
-    connection.close()
+    cursor = connection.cursor(buffered=True) 
+    cursor.execute("SELECT starttime, endtime, emmdata, emmtype FROM emmg where emmtype = 21")
+    #rows = cursor.fetchall()
+	
+    
     current_time = int(time.time())
     
-    for row in rows:
+    for row in cursor:
+        #logger.info(f"starttime, endtime, emmdata, emmtype: {row}")
         starttime, endtime, emmdata, emmtype = row
-        stage_endtime = int(starttime + stage_osm)
-    # Check if current time (in epoch) is less than end time for the emmtype
-        if current_time < endtime and current_time < stage_endtime:
+        #stage_endtime = int(starttime + stage_osm)
+        stage_endtime = starttime + stage_osm
+
+        # Check if current time (in epoch) is less than end time for the emmtype
+        #logger.info(f"CurrentTime:{current_time}, endtime: {endtime}, Stage_duration:{stage_endtime}")
+        #if current_time < endtime and current_time < stage_endtime:
+        if starttime <= stage_endtime <= endtime:
             cycler(emmdata, multicast_group, multicast_port)
             logger.info(f"EMM Data: {emmdata}")
-            logger.info(emmdata)
+    cursor.close()
+    connection.close()
     logger.info("Cycle OSM done")
     time.sleep(cycle_osm)
 
 def adddevice():
     connection = connection_pool.get_connection()
-    cursor = connection.cursor()
-    cursor.execute("SELECT starttime, endtime, emmdata, emmtype FROM emmg where emmtype = 10 limit 1000")
-    rows = cursor.fetchall()
-    cursor.close()
-    connection.close()
+    cursor = connection.cursor(buffered=True)
+    cursor.execute("SELECT starttime, endtime, emmdata, emmtype FROM emmg where emmtype = 10")
+    #rows = cursor.fetchall()
+    
     current_time = int(time.time())
     
-    for row in rows:
+    for row in cursor:
+
         starttime, endtime, emmdata, emmtype = row
         stage_endtime = int(starttime + stage_adddevice)
     # Check if current time (in epoch) is less than end time for the emmtype
-        if current_time < endtime and current_time < stage_endtime:
+        #if current_time < endtime and current_time < stage_endtime:
+        if starttime <= stage_endtime <= endtime:
             cycler(emmdata, multicast_group, multicast_port)
-            logger.info(emmdata)
+            logger.info(f"EMM Data: {emmdata}")
     logger.info('Cycle adddevice Done')
-    
+    cursor.close()
+    connection.close()
     time.sleep(cycle_adddevice)
 
 def entitlement():
     connection = connection_pool.get_connection()
-    cursor = connection.cursor()
-    cursor.execute("SELECT starttime, endtime, emmdata, emmtype FROM emmg where emmtype = 44 limit 1000")
-    rows = cursor.fetchall()
-    cursor.close()
-    connection.close()
+    cursor = connection.cursor(buffered=True)
+    cursor.execute("SELECT starttime, endtime, emmdata, emmtype FROM emmg where emmtype = 44")
+    #rows = cursor.fetchall()
     current_time = int(time.time())
     
-    for row in rows:
+    for row in cursor:
         starttime, endtime, emmdata, emmtype = row
         stage_endtime = int(starttime + stage_entitlement)
         # Check if current time (in epoch) is less than end time for the emmtype
-        if current_time < endtime and current_time < stage_endtime:
+        #if current_time < endtime and current_time < stage_endtime:
+        if starttime <= stage_endtime <= endtime:
             cycler(emmdata, multicast_group, multicast_port)
-            logger.info(emmdata)
-   
-    logger.info('Cycle entitlement Done')     
+            logger.info(f"EMM Data: {emmdata}")
+    cursor.close()
+    connection.close()
+    logger.info('Cycle entitlement Done') 
+        
     time.sleep(cycle_entitlement)
 
 
