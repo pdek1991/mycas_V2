@@ -191,6 +191,7 @@ SHOW MASTER STATUS;
 ```
 
 
+
 # Kubernetes Gateway API Configuration and Traefik Setup
 
 This document outlines the Kubernetes Gateway API configuration used for routing traffic to backend services, specifically `mycas-webapp` and `mycas-webapp2`, within the `mycas` namespace. It also includes the steps to install the Traefik Gateway Controller, which is used to implement the Gateway API.
@@ -329,7 +330,6 @@ Check if the Traefik pods are running:
 kubectl get pods -n traefik
 
 ```
-
 
 
 

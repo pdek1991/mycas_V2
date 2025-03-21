@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  creationTimestamp: "2025-03-20T10:43:24Z"
+  labels:
+    app: mycas-client
+    pod-template-hash: 546c46476b
+  name: socket-server
+  namespace: mycas
+  resourceVersion: "1606773"
+  uid: a15028d1-6cd5-433e-a93a-c5026adb0983
+spec:
+  clusterIP: 10.107.172.86
+  clusterIPs:
+  - 10.107.172.86
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - port: 5050
+    protocol: UDP
+    targetPort: 5050
+  selector:
+    app: mycas-client
+    pod-template-hash: 546c46476b
+  sessionAffinity: None
+  type: ClusterIP
+status:
+  loadBalancer: {}

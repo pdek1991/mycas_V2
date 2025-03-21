@@ -20,7 +20,9 @@ def generate_device_id():
 # Function to generate a random expiry date (future date)
 def generate_expiry():
     today = datetime.now()
+
     future_date = today + timedelta(days=random.randint(1, 30))  # Random future date within a year
+
     return future_date.strftime('%Y-%m-%d')
 
 # Function to send a request and record response time
@@ -92,4 +94,6 @@ def simulate_concurrent_requests(total_transactions):
             print(f"\n📌 {endpoint.upper()} Endpoint: No responses recorded.")
 
 # Run simulation for 1000 transactions
+
 simulate_concurrent_requests(100)
+

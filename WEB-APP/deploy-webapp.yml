@@ -20,7 +20,9 @@ spec:
         - name: mycas-webapp
           image: pdek1991/mycas_webapp:v2
           imagePullPolicy: Always
+
 #          command: ["/bin/sh", "-c", "sleep 1d"]
+
           envFrom:
             - configMapRef:
                 name: mycas-config
