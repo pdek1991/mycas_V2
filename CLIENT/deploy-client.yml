@@ -19,7 +19,9 @@ spec:
       containers:
         - name: mycas-client
           image: pdek1991/mycas_client:v2
-          imagePullPolicy: Always
+
+#          imagePullPolicy: Always
+
           envFrom:
             - configMapRef:
                 name: mycas-config
@@ -37,3 +39,22 @@ spec:
             limits:
               cpu: "50m"      
               memory: "128Mi"  
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mycas-client
+  name: socket-server
+  namespace: mycas
+spec:
+  ports:
+  - port: 5050
+    protocol: UDP
+    targetPort: 5050
+  selector:
+    app: mycas-client
+  type: ClusterIP
+

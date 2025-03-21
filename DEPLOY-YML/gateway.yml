@@ -1,0 +1,14 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: my-gateway
+  namespace: mycas
+spec:
+  gatewayClassName: traefik-gatewayclass
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 8080 # Exposed as a NodePort
+      allowedRoutes:
+        namespaces:
+          from: All

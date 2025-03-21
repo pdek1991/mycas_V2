@@ -1,28 +1,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: mycas-webapp
-  namespace: mycas
+  name: mycas-webapp2
+  namespace: default
   labels:
-    app: mycas-webapp
+    app: mycas-webapp2
 spec:
   replicas: 1  # Single replica
   selector:
     matchLabels:
-      app: mycas-webapp
+      app: mycas-webapp2
   template:
     metadata:
-      name: mycas-webapp
+      name: mycas-webapp2
       labels:
-        app: mycas-webapp
+        app: mycas-webapp2
     spec:
       containers:
-        - name: mycas-webapp
+        - name: mycas-webapp2
           image: pdek1991/mycas_webapp:v2
-          imagePullPolicy: Always
-
-          #command: ["/bin/sh", "-c", "sleep 1d"]
-
+          #imagePullPolicy: Always
+          command: ["/bin/sh", "-c", "sleep 1d"]
           envFrom:
             - configMapRef:
                 name: mycas-config
@@ -42,26 +40,20 @@ spec:
           ports:
             - containerPort: 8080  # Flask default port
 
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 8080
-              
-            initialDelaySeconds: 5
-            periodSeconds: 10
 
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
-  name: mycas-webapp
+  name: webapp
+  namespace: default
 spec:
   selector:
-    app: mycas-webapp
+    app: mycas-webapp2
   ports:
     - protocol: TCP
       port: 80
       targetPort: 8080
-      nodePort: 31310
+      nodePort: 31313
   type: NodePort
