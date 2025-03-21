@@ -19,7 +19,9 @@ spec:
       containers:
         - name: mycas-client
           image: pdek1991/mycas_client:v2
+
 #          imagePullPolicy: Always
+
           envFrom:
             - configMapRef:
                 name: mycas-config
@@ -37,6 +39,7 @@ spec:
             limits:
               cpu: "50m"      
               memory: "128Mi"  
+
 ---
 
 apiVersion: v1
@@ -54,3 +57,4 @@ spec:
   selector:
     app: mycas-client
   type: ClusterIP
+

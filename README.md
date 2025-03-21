@@ -190,3 +190,146 @@ SHOW SLAVE STATUS \G;
 SHOW MASTER STATUS;
 ```
 
+
+
+# Kubernetes Gateway API Configuration and Traefik Setup
+
+This document outlines the Kubernetes Gateway API configuration used for routing traffic to backend services, specifically `mycas-webapp` and `mycas-webapp2`, within the `mycas` namespace. It also includes the steps to install the Traefik Gateway Controller, which is used to implement the Gateway API.
+
+## Kubernetes Resources
+
+###GatewayClass (gatewayclass.yml)
+
+The `GatewayClass` resource defines the class of Gateways that will be managed by the Traefik Gateway Controller.
+
+```yaml
+apiVersion: gateway.networking.k8s.io/v1
+kind: GatewayClass
+metadata:
+  name: traefik-gatewayclass
+spec:
+  controllerName: "traefik.io/gateway-controller"
+```
+  
+##Gateway (gateway.yml)
+##The Gateway resource defines the entry point for external traffic into the Kubernetes cluster.It specifies the listener configuration and allowed routes.
+```
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: my-gateway
+  namespace: mycas
+spec:
+  gatewayClassName: traefik-gatewayclass
+  listeners:
+    - name: http
+      protocol: HTTP
+      port: 8080 # Exposed as a NodePort
+      allowedRoutes:
+        namespaces:
+          from: All
+```
+
+##HTTPRoute (http.yml)
+##The HTTPRoute resource defines the routing rules for HTTP traffic. It matches incoming ##requests based on path prefixes and forwards them to the appropriate backend services.
+
+```
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: HTTPRoute
+metadata:
+  name: mycas-webapp2-route
+  namespace: mycas
+spec:
+  parentRefs:
+  - name: my-gateway
+  rules:
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /main
+    backendRefs:
+    - name: mycas-webapp2
+      port: 80
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /find
+    backendRefs:
+    - name: mycas-webapp2
+      port: 80
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /status
+    backendRefs:
+    - name: mycas-webapp2
+      port: 80
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /search
+    backendRefs:
+    - name: mycas-webapp
+      port: 80
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /
+    backendRefs:
+    - name: mycas-webapp
+      port: 80
+  - matches:
+    - path:
+        type: PathPrefix
+        value: /health
+    backendRefs:
+    - name: mycas-webapp
+      port: 80
+```
+
+#Gateway Service (gateway-service.yml)
+#This service exposes the Traefik Gateway Controller as a NodePort, allowing external access.
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+  namespace: traefik
+spec:
+  selector:
+    app.kubernetes.io/name: traefik
+  type: NodePort
+  ports:
+    - port: 30090
+      targetPort: 30090
+      nodePort: 30090
+```
+##Traefik Gateway Controller Installation
+##These steps guide you through installing the Traefik Gateway Controller using Helm.
+
+1. Add the Traefik Helm Repository
+
+```
+helm repo add traefik [https://helm.traefik.io/traefik](https://helm.traefik.io/traefik)
+helm repo update
+```
+
+2. Install Traefik with Gateway API Support
+Install Traefik with the Gateway API enabled. Note the namespace is traefik, and gateway api is enabled.
+```
+helm install traefik traefik/traefik \
+  --namespace traefik \
+  --create-namespace \
+  --set "experimental.kubernetes.gatewayAPI.enabled=true"
+  ```
+ 
+3. Verify Traefik Installation
+Check if the Traefik pods are running:
+```
+kubectl get pods -n traefik
+
+```
+
+
+
