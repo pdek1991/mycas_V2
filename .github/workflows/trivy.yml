@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ "kubemaster" ]
   schedule:
-    - cron: '18 21 * * 3'  # Runs every Wednesday at 21:18 UTC
+    - cron: '*/5 * * * *'  # Runs every Wednesday at 21:18 UTC
 
 permissions:
   contents: read
