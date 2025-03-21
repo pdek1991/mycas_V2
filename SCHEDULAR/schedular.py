@@ -2,14 +2,32 @@ import datetime
 import mysql.connector
 import schedule
 import time
+import os
+import logging
+import sys
+
+logging.basicConfig(
+    level=logging.INFO,  # Set log level
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    handlers=[logging.StreamHandler(sys.stdout)]
+)
+
+logger = logging.getLogger(__name__)
+
+db_user = os.getenv("DB_USER", "omi_user")
+db_pass = os.getenv("DB_PASS")		##SECRET
+db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas")
+db_name = os.getenv("DB_NAME")
+db_port = int(os.getenv("DB_PORT", 3306))
+
 
 def delete_expired_rows():
     # Connect to the database
     conn = mysql.connector.connect(
-        host="192.168.56.112",
-        user="omi_user",
-        password="omi_user",
-        database="cas",
+        host=db_host,
+        user=db_user,
+        password=db_pass,
+        database=db_name,
     )
     cursor = conn.cursor()
 
@@ -37,7 +55,7 @@ def delete_expired_rows():
 
         # Store the count in the dictionary
         deleted_rows_count[table] = deleted_rows
-        print(f"Deleted {deleted_rows} rows from table {table}")
+        logger.info(f"Deleted {deleted_rows} rows from table {table}")
 
     # Close the database connection
     cursor.close()

@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: mycas-client
+  namespace: mycas
   labels:
     app: mycas-client
 spec:
@@ -17,13 +18,39 @@ spec:
     spec:
       containers:
         - name: mycas-client
-          image: pdek1991/mycas_client:v1
-          imagePullPolicy: Always
+          image: pdek1991/mycas_client:v2
+#          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: mycas-config
+          env:
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mycas-secret
+                  key: DB_PASS
 #          command: ["/bin/sh", "-c", "sleep 1d"]
           resources:
             requests:
-              cpu: "100m"      # Minimum CPU request (0.1 vCPU)
-              memory: "128Mi"  # Minimum memory request (128MB)
+              cpu: "50m"      
+              memory: "128Mi" 
             limits:
-              cpu: "250m"      # Limit to 0.25 vCPU
-              memory: "256Mi"  # Limit to 256MB
+              cpu: "50m"      
+              memory: "128Mi"  
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: mycas-client
+  name: socket-server
+  namespace: mycas
+spec:
+  ports:
+  - port: 5050
+    protocol: UDP
+    targetPort: 5050
+  selector:
+    app: mycas-client
+  type: ClusterIP

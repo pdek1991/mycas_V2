@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mycas-webapp2
+  namespace: default
+  labels:
+    app: mycas-webapp2
+spec:
+  replicas: 1  # Single replica
+  selector:
+    matchLabels:
+      app: mycas-webapp2
+  template:
+    metadata:
+      name: mycas-webapp2
+      labels:
+        app: mycas-webapp2
+    spec:
+      containers:
+        - name: mycas-webapp2
+          image: pdek1991/mycas_webapp:v2
+          #imagePullPolicy: Always
+          command: ["/bin/sh", "-c", "sleep 1d"]
+          envFrom:
+            - configMapRef:
+                name: mycas-config
+          env:
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: mycas-secret
+                  key: DB_PASS
+          resources:
+            requests:
+              cpu: "100m"      
+              memory: "256Mi" 
+            limits:
+              cpu: "200m"      
+              memory: "512Mi" 
+          ports:
+            - containerPort: 8080  # Flask default port
+
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: webapp
+spec:
+  selector:
+    app: mycas-webapp2
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080
+      nodePort: 31312
+  type: NodePort

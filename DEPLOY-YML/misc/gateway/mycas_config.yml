@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mycas-config
+  namespace: default
+data:
+  DB_USER: "omi_user"
+  HOST: "mycas-mysql-0.mysql.mycas"
+  DB_NAME: "cas" 
+  DB_PORT: "3306"
+  KAFKA_SERVER: "kafka-0.kafka.mycas:9092"
+  KAFKA_GROUP_ID: "emmg"
+  KAFKA_TOPIC: "topic_mycas"
+  MULTICAST: "224.1.1.1"
+  PORT: "5000"

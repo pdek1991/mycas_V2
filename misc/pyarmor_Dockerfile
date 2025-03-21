@@ -1,0 +1,57 @@
+# --- Stage 1: Build dependencies and obfuscate Python code ---
+    FROM python:3.10 AS builder
+
+    # Set environment variables
+    ENV PYTHONDONTWRITEBYTECODE=1 \
+        PYTHONUNBUFFERED=1
+    
+    # Set working directory
+    WORKDIR /mycas/CLIENT
+    
+    # Install dependencies
+    COPY requirements.txt .
+    RUN python -m venv /opt/venv \
+        && /opt/venv/bin/pip install --no-cache-dir --upgrade pip setuptools wheel \
+        && /opt/venv/bin/pip install --no-cache-dir -r requirements.txt
+    
+    # Install PyArmor for obfuscation
+    RUN /opt/venv/bin/pip install pyarmor
+    
+    # Copy application files
+    COPY . .
+    
+    # Ensure the output directory exists before obfuscation
+    RUN mkdir -p /mycas/CLIENT/dist
+    
+    # Obfuscate Python code
+    RUN /opt/venv/bin/pyarmor gen stb_client.py
+    
+    # --- Stage 2: Create a lightweight runtime image ---
+    FROM python:3.10-slim
+    
+    # Set environment variables
+    ENV PYTHONDONTWRITEBYTECODE=1 \
+        PYTHONUNBUFFERED=1 \
+        PATH="/opt/venv/bin:$PATH"
+    
+    # Set working directory
+    WORKDIR /mycas/CLIENT
+    
+    # Install system dependencies required for tkinter
+    
+    # Copy the virtual environment from the builder stage
+    COPY --from=builder /opt/venv /opt/venv
+    
+    # Copy only the obfuscated Python files (not the original source code)
+    COPY --from=builder /mycas/CLIENT/dist /mycas/CLIENT/
+    
+    # Change file permissions (FIX: Find the actual executable file)
+    RUN chmod +x /mycas/CLIENT/dist/stb_client.py || true
+    
+    # Use a non-root user for security
+    RUN groupadd --system mycas && useradd --system --gid mycas mycas
+    USER mycas
+    
+    # Default command to run the application
+    CMD ["python", "/mycas/CLIENT/stb_client.py"]
+    

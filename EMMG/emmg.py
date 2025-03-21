@@ -6,6 +6,7 @@ import pyaes
 import base64
 import os
 import logging
+import sys
 
 logging.basicConfig(
     level=logging.INFO,  # Set log level
@@ -15,16 +16,29 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
+
+##Get ENV from CM and SECRETS
+db_user = os.getenv("DB_USER", "omi_user")
+db_pass = os.getenv("DB_PASS")
+db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas")
+db_name = os.getenv("DB_NAME")
+db_port = int(os.getenv("DB_PORT", 3306))
+kafka_bootstrap_server = os.getenv("KAFKA_SERVER", "kafka-0.kafka.mycas:9092")
+kafka_group_id = os.getenv("KAFKA_GROUP_ID", "emmg")
+kafka_topic = os.getenv("KAFKA_TOPIC", "topic_mycas")
+
+
+
 conf = {
-    'bootstrap.servers': '192.168.56.112:9092',
-    'group.id': 'emmg',
+    'bootstrap.servers': kafka_bootstrap_server,
+    'group.id': kafka_group_id,
     'auto.offset.reset': 'earliest'
 }
 
-mysql_host = '192.168.56.112'
-mysql_user = 'omi_user'
-mysql_password = 'omi_user'
-mysql_database = 'cas'
+mysql_host = db_host
+mysql_user = db_user
+mysql_password = db_pass
+mysql_database = db_name
 
 # Create Kafka consumer
 consumer = Consumer(conf)

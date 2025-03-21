@@ -13,15 +13,27 @@ import os.path
 from prometheus_client import CollectorRegistry, Gauge, push_to_gateway
 from prometheus_client import push_to_gateway
 
-if not os.path.exists(r'.\Logs'):
-    os.makedirs(r'.\Logs')
+if not os.path.exists(r'./Logs'):
+    os.makedirs(r'./Logs')
 
 new_devices = 0
-registry = CollectorRegistry()
-devices_added = Gauge('mycas_new_activation', 'New activation', registry=registry)
-pushgateway_url = 'http://192.168.56.11:9091'
+#2025#registry = CollectorRegistry()
+#2025#devices_added = Gauge('mycas_new_activation', 'New activation', registry=registry)
+#2025#pushgateway_url = 'http://192.168.56.11:9091'
 
-bootstrap_servers = '192.168.56.112:9092'
+#2025#bootstrap_servers = '192.168.56.112:9092'
+
+db_user = os.getenv("DB_USER", "omi_user")
+db_pass = os.getenv("DB_PASS")		##SECRET
+db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas")
+db_name = os.getenv("DB_NAME")
+db_port = int(os.getenv("DB_PORT", 3306))
+kafka_bootstrap_server = os.getenv("KAFKA_SERVER", "kafka-0.kafka.mycas:9092")
+kafka_group_id = os.getenv("KAFKA_GROUP_ID", "emmg")
+kafka_topic = os.getenv("KAFKA_TOPIC", "topic_mycas")
+
+
+bootstrap_servers = kafka_bootstrap_server
 producer = KafkaProducer(bootstrap_servers=bootstrap_servers)
 
 
@@ -46,10 +58,11 @@ kafka_logger.setLevel(logging.INFO)
 
 # Create a connection pool
 db_config = {
-    "host": "192.168.56.112",
-    "user": "omi_user",
-    "password": "omi_user",
-    "database": "cas",
+    "host": db_host,
+    "user": db_user,
+    "password": db_pass,
+    "database": db_name,
+    "port": db_port,
 }
 
 connection_pool = mysql.connector.pooling.MySQLConnectionPool(pool_name="my_pool", pool_size=5, **db_config)
@@ -64,7 +77,7 @@ def generate_osm():
     message_text = request.form['message_text']
     device_id = request.form['device_id']
     expiry = request.form['expiry']
-    topic = 'topic_mycas' 
+    topic = kafka_topic 
     emmtype = '44'
     message = f'{device_id}:{message_id}:{message_text}:{emmtype}:{expiry}'
     try:
@@ -95,7 +108,7 @@ def add_entitlement():
     device_id = request.form['device_id']
     package_ids = request.form['package_ids'].split(":")
     expiry = request.form['expiry']
-    topic = 'topic_mycas'  # Replace with your Kafka topic name
+    topic = kafka_topic  # Replace with your Kafka topic name
     emmtype = '21'
     # Acquire a connection from the pool
     connection = connection_pool.get_connection()
@@ -127,7 +140,7 @@ def device_keys():
     #new_devices = 0
     device_id = request.form['device_id']
     bskeys = request.form['bskeys']
-    topic = 'topic_mycas'  
+    topic = kafka_topic  
     emmtype = '10'
     expiry = '2037-12-31'
     message = f'{device_id}:{bskeys}:{emmtype}:{expiry}'
@@ -135,9 +148,9 @@ def device_keys():
         producer.send(topic, message.encode('utf-8')).get()
         logger.info(f"Message sent to Kafka topic {topic}: {message}")
         new_devices += 1
-        devices_added.set(new_devices)
-        push_to_gateway(pushgateway_url, job='device_keys', registry=registry)
-        print(new_devices)
+        #2025#devices_added.set(new_devices)
+        #2025#push_to_gateway(pushgateway_url, job='device_keys', registry=registry)
+        #2025#print(new_devices)
     except KafkaError as e:
         logger.error(f"Failed to send message to Kafka: {e}")
     # Acquire a connection from the pool
@@ -159,9 +172,9 @@ def device_keys():
     return render_template('index.html', flash_messages=flash_messages)
     #return 'Devices added successfully', 200
 
-@app.route('/success', methods=['GET'])
+@app.route('/health', methods=['GET'])
 def success():
-    return 'Healthy-swarm01', 200
+    return 'Healthy', 200
 
 
 if __name__ == '__main__':

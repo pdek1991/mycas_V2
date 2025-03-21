@@ -6,9 +6,12 @@ import base64
 import time
 import logging
 import pyarmor
+import os
 # Define the multicast group and port
-multicast_group = '224.1.1.1'
-port = 5000
+
+multicast_group = os.getenv("MULTICAST", "224.1.1.1")  
+port = int(os.getenv("PORT", 5000))
+
 key = 'qwertyuioplkjhgd'
 start_time = time.time()
 total_bytes = 0
@@ -22,7 +25,7 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-logger.info("Listening on 224.1.1.1 an dport 5000")
+logger.info(f"Listening on {multicast_group} and Port {port}")
 # Create a UDP socket
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
