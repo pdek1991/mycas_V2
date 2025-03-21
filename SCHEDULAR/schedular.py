@@ -14,10 +14,10 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
-db_user = os.getenv("DB_USER", "omi_user")
-db_pass = os.getenv("DB_PASS")		##SECRET
-db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas")
-db_name = os.getenv("DB_NAME")
+db_user = os.getenv("DB_USER", "omi_user").strip()
+db_pass = os.getenv("DB_PASS").strip()		##SECRET
+db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas").strip()
+db_name = os.getenv("DB_NAME").strip()
 db_port = int(os.getenv("DB_PORT", 3306))
 
 
@@ -46,12 +46,14 @@ def delete_expired_rows():
             cursor.execute(query, (today,))
             conn.commit()
             deleted_rows = cursor.rowcount
+            logger.info(f"Deleted Total {deleted_rows} Rows from generate_osm and entitlements table")
         elif table == 'emmg':
             # Delete rows where endtime is less than or equal to the current epoch timestamp
             query = f"DELETE FROM {table} WHERE endtime <= %s"
             cursor.execute(query, (epoch,))
             conn.commit()
             deleted_rows = cursor.rowcount
+            logger.info(f"Deleted Total {deleted_rows} Rows from emmg tabel")
 
         # Store the count in the dictionary
         deleted_rows_count[table] = deleted_rows
@@ -65,7 +67,7 @@ def delete_expired_rows():
     return deleted_rows_count
 
 # Schedule the delete_expired_rows() function to run every day at 00:00 hours
-schedule.every().day.at("00:00").do(delete_expired_rows)
+schedule.every(2).minutes.do(delete_expired_rows)
 
 # Run the scheduler
 while True:
