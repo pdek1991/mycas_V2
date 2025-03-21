@@ -1,4 +1,3 @@
-
 from flask import Flask, request
 import mysql.connector.pooling
 import logging
@@ -23,14 +22,14 @@ new_devices = 0
 
 #2025#bootstrap_servers = '192.168.56.112:9092'
 
-db_user = os.getenv("DB_USER", "omi_user")
-db_pass = os.getenv("DB_PASS")		##SECRET
-db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas")
-db_name = os.getenv("DB_NAME")
+db_user = os.getenv("DB_USER", "omi_user").strip()
+db_pass = os.getenv("DB_PASS").strip()		##SECRET
+db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas").strip()
+db_name = os.getenv("DB_NAME").strip()
 db_port = int(os.getenv("DB_PORT", 3306))
-kafka_bootstrap_server = os.getenv("KAFKA_SERVER", "kafka-0.kafka.mycas:9092")
-kafka_group_id = os.getenv("KAFKA_GROUP_ID", "emmg")
-kafka_topic = os.getenv("KAFKA_TOPIC", "topic_mycas")
+kafka_bootstrap_server = os.getenv("KAFKA_SERVER", "kafka-0.kafka.mycas:9092").strip()
+kafka_group_id = os.getenv("KAFKA_GROUP_ID", "emmg").strip()
+kafka_topic = os.getenv("KAFKA_TOPIC", "topic_mycas").strip()
 
 
 bootstrap_servers = kafka_bootstrap_server
@@ -79,7 +78,7 @@ def generate_osm():
     expiry = request.form['expiry']
     topic = kafka_topic 
     emmtype = '44'
-    message = f'{device_id}:{message_id}:{message_text}:{emmtype}:{expiry}'
+    message = f"{device_id}:{message_id}:{message_text}:{emmtype}:{expiry}"
     try:
         producer.send(topic, message.encode('utf-8')).get()
         logger.info(f"Message sent to Kafka topic {topic}: {message}")
@@ -119,7 +118,7 @@ def add_entitlement():
     for package_id in package_ids:
         data = (device_id, package_id, expiry)
         cursor.execute(insert_query, data)
-        message = f'{device_id}:{package_id}:{emmtype}:{expiry}'
+        message = f"{device_id}:{package_id}:{emmtype}:{expiry}"
         try:
             producer.send(topic, message.encode('utf-8')).get()
             logger.info(f"Message sent to Kafka topic {topic}:{message}:{expiry}")
@@ -143,7 +142,7 @@ def device_keys():
     topic = kafka_topic  
     emmtype = '10'
     expiry = '2037-12-31'
-    message = f'{device_id}:{bskeys}:{emmtype}:{expiry}'
+    message = f"{device_id}:{bskeys}:{emmtype}:{expiry}"
     try:
         producer.send(topic, message.encode('utf-8')).get()
         logger.info(f"Message sent to Kafka topic {topic}: {message}")
@@ -176,6 +175,30 @@ def device_keys():
 def success():
     return 'Healthy', 200
 
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    results = None
+    if request.method == 'POST':
+        search_variable = request.form.get('device_id', '').strip()
+
+        # Validate input
+        if not search_variable:
+            return "Error: Please enter a device_id", 400
+
+        # Connect to MySQL
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor()
+
+        # Use parameterized query to prevent SQL injection
+        query = "SELECT package_id, expiry FROM entitlements WHERE device_id LIKE %s"
+        cursor.execute(query, (f"%{search_variable}%",))
+        results = cursor.fetchall()
+
+        cursor.close()
+        connection.close()
+
+    return render_template("search_form.html", results=results)
 
 if __name__ == '__main__':
     #app.run()
