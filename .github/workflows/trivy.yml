@@ -26,7 +26,6 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y jq
 
    
-
       - name: Fetch latest 5 images from Docker Hub
         run: |
           curl -s "https://hub.docker.com/v2/repositories/pdek1991/tags?page_size=50" | \
