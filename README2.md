@@ -1021,5 +1021,7 @@ Spot Instances: Consider using spot instances (or similar) for non-critical work
 SRE Best Practice: Continuously monitor and optimize your Kubernetes deployments to ensure that you are using resources efficiently and cost-effectively.
 
 Conclusion
+
 Securing your Kubernetes deployments is a shared responsibility that requires a holistic approach. By following the best practices outlined in this document, from securing your Dockerfiles to implementing robust runtime security measures,
 you can significantly reduce the risk of security breaches and build resilient, scalable, and secure applications on Kubernetes.  Remember to stay updated with the latest security best practices and continuously improve your security posture.
+
