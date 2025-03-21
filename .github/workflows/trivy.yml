@@ -1,0 +1,50 @@
+name: trivy-scan-latest-5
+
+on:
+  push:
+    branches: [ "kubemaster" ]
+  pull_request:
+    branches: [ "kubemaster" ]
+  schedule:
+    - cron: '18 21 * * 3'  # Runs every Wednesday at 21:18 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  trivy-scan:
+    permissions:
+      contents: read
+      security-events: write
+      actions: read
+    name: Trivy Vulnerability Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install jq (JSON Processor)
+        run: sudo apt-get update && sudo apt-get install -y jq
+
+   
+
+      - name: Fetch latest 5 images from Docker Hub
+        run: |
+          curl -s "https://hub.docker.com/v2/repositories/pdek1991/tags?page_size=50" | \
+          jq -r '.results | sort_by(.last_updated) | reverse | .[:5] | .[].name' > latest_images.txt
+          echo "Latest 5 images to scan:"
+          cat latest_images.txt
+
+      - name: Run Trivy on latest 5 images
+        run: |
+          while IFS= read -r image; do
+            echo "Scanning image: docker.io/pdek1991/my-app:$image"
+            trivy image --format template --template '@/contrib/sarif.tpl' \
+              -o "trivy-results-${image}.sarif" --severity CRITICAL,HIGH \
+              "docker.io/pdek1991/my-app:$image"
+          done < latest_images.txt
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: 'trivy-results-*.sarif'
