@@ -60,11 +60,14 @@ spec:
           port: 8080
         initialDelaySeconds: 10
         periodSeconds: 15```
+
+
 Networking & Ingress
 ✅ Service (ClusterIP, NodePort, LoadBalancer) (Internal & external access)
 ✅ Ingress (NGINX, Traefik, Gateway API) (Path-based & host-based routing)
 ✅ Network Policies (Restrict pod-to-pod & external communication)
 ✅ Pod DNS Configuration (Use CoreDNS for service discovery)
+
 
 ```
 apiVersion: networking.k8s.io/v1
@@ -75,7 +78,9 @@ spec:
   podSelector: {}
   policyTypes:
     - Ingress
-    - Egress```
+    - Egress
+    ```
+    
 Storage Management
 ✅ Persistent Volume (PV) & Persistent Volume Claim (PVC) (For stateful apps)
 ✅ StorageClass (Choose appropriate backend: local, AWS EBS, Azure Disk, NFS)
@@ -117,6 +122,7 @@ spec:
           type: Utilization
           averageUtilization: 70
 ```
+
 Access Management & Security
 ✅ RBAC (Roles & RoleBindings) (Restrict user and service access)
 ✅ ServiceAccount (Use dedicated accounts for workloads)
@@ -133,7 +139,9 @@ metadata:
   name: db-secret
 type: Opaque
 data:
-  DB_PASSWORD: bXlwYXNzd29yZA==  # Base64 encoded```
+  DB_PASSWORD: bXlwYXNzd29yZA==  # Base64 encoded
+  
+  ```
 Cluster-Wide Policies & Quotas
 ✅ LimitRanges (Set default CPU/memory for pods)
 ✅ ResourceQuota (Enforce namespace-level quotas)
@@ -151,6 +159,7 @@ spec:
     requests.memory: "4Gi"
     limits.cpu: "4"
     limits.memory: "8Gi" ```
+    
 4. Security Best Practices
 ✅ Use Distroless or Alpine Base Images
 ✅ Enable Pod Security Admission (PSA) Policies
@@ -184,7 +193,9 @@ spec:
     type: RollingUpdate
     rollingUpdate:
       maxUnavailable: 1
-      maxSurge: 1```
+      maxSurge: 1
+```
+
 7. Backup & Disaster Recovery
 ✅ Velero for Cluster Backups
 ✅ Database Backups & Snapshots
@@ -240,7 +251,8 @@ Choose an appropriate method:
 ✅ Taints & Tolerations (Restrict workloads to specific nodes)
 ✅ Pod Disruption Budget (PDB) (Ensure availability during disruptions)
 
-```yaml
+```
+
 apiVersion: v1
 kind: Pod
 metadata:
@@ -299,7 +311,7 @@ spec:
 ✅ StorageClass (Choose appropriate backend: local, AWS EBS, Azure Disk, NFS)
 ✅ VolumeMounts & EmptyDir (For ephemeral & shared storage)
 
-```yaml
+```
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -317,7 +329,7 @@ spec:
 ✅ Vertical Pod Autoscaler (VPA) (Automatically adjust pod resources)
 ✅ Cluster Autoscaler (Auto-scale nodes based on load)
 
-```yaml
+```
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
@@ -341,7 +353,7 @@ spec:
 ✅ Secrets & ConfigMaps (Store sensitive data securely)
 ✅ TLS for Ingress (Enable HTTPS using cert-manager)
 
-```yaml
+```
 apiVersion: v1
 kind: Secret
 metadata:
@@ -356,7 +368,7 @@ data:
 ✅ ResourceQuota (Enforce namespace-level quotas)
 ✅ PodPriority (Prioritize critical workloads)
 
-```yaml
+```
 apiVersion: v1
 kind: ResourceQuota
 metadata:
@@ -390,7 +402,7 @@ spec:
 ✅ Blue-Green Deployments (Multiple services with traffic shifting)
 ✅ Rolling Updates (Deployment strategy in K8s)
 
-```yaml
+```
 apiVersion: apps/v1
 kind: Deployment
 metadata:
