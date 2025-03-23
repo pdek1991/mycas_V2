@@ -16,6 +16,7 @@ spec:
       labels:
         app: mycas-cycler
     spec:
+      priorityClassName: low
       containers:
         - name: mycas-cycler
           image: pdek1991/mycas_cycler:v2
@@ -30,6 +31,7 @@ spec:
                   name: mycas-secret
                   key: DB_PASS
           #command: ["/bin/sh", "-c", "sleep 1d"]
+          
           resources:
             requests:
               cpu: "50m"      
