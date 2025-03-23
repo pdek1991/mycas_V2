@@ -31,14 +31,14 @@
 
 ## **🔸 Phase 2: Development & Integration (Agile/SDLC: Design/Development/Testing)**
 ### **DevOps Role:**
-✅ Set up the **CI/CD pipeline** for automated builds, tests, and deployments.
-✅ Implement **IaC for provisioning development and testing environments**.
-✅ Integrate **automated testing** into the CI/CD pipeline (unit tests, integration tests, security scans).
-✅ Configure **version control (Git) and branching strategies**.
-✅ Provide **developers with self-service tools** for environment provisioning and deployment.
-✅ Monitor the **CI/CD pipeline and address failures**.
-✅ Implement **security scanning and analysis tools**.
-✅ Work with developers on **containerization and microservices implementation**.
+✅ Set up the **CI/CD pipeline** for automated builds, tests, and deployments.<br>
+✅ Implement **IaC for provisioning development and testing environments**.<br>
+✅ Integrate **automated testing** into the CI/CD pipeline (unit tests, integration tests, security scans).<br>
+✅ Configure **version control (Git) and branching strategies**.<br>
+✅ Provide **developers with self-service tools** for environment provisioning and deployment.<br>
+✅ Monitor the **CI/CD pipeline and address failures**.<br>
+✅ Implement **security scanning and analysis tools**.<br>
+✅ Work with developers on **containerization and microservices implementation**.<br>
 
 ### **Steps:**
 - **CI/CD Pipeline Setup:** Automate **build, test, and deployment** processes.
