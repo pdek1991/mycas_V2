@@ -5,13 +5,13 @@
 
 ## **🔸 Phase 1: Requirement Gathering & Planning (Agile/SDLC: Initiation/Planning)**
 ### **DevOps Role:**
-✅ Participate in requirement gathering sessions to understand **non-functional requirements (NFRs)** like scalability, reliability, security, and performance.
-✅ Advocate for **Infrastructure-as-Code (IaC)** from the beginning.
-✅ Collaborate with **developers and architects** to define the target deployment environment and architecture.
-✅ Contribute to **technology stack selection**, considering automation and observability.
-✅ Help define the **CI/CD pipeline strategy**.
-✅ Contribute to **risk assessment and mitigation plans**.
-✅ Assist in creating the **initial backlog and sprint planning**.
+✅ Participate in requirement gathering sessions to understand **non-functional requirements (NFRs)** like scalability, reliability, security, and performance.<br>
+✅ Advocate for **Infrastructure-as-Code (IaC)** from the beginning.<br>
+✅ Collaborate with **developers and architects** to define the target deployment environment and architecture.<br>
+✅ Contribute to **technology stack selection**, considering automation and observability.<br>
+✅ Help define the **CI/CD pipeline strategy**.<br>
+✅ Contribute to **risk assessment and mitigation plans**.<br>
+✅ Assist in creating the **initial backlog and sprint planning**.<br>
 
 ### **Steps:**
 - **NFR Definition:** Document **scalability, performance, security, and availability** requirements.
