@@ -1,4 +1,4 @@
-1. Pre-Requisites
+1. Pre-Requisites<br>
 ✅ Set up Kubernetes Cluster (Managed or self-hosted)<br>
 ✅ Ensure Cluster Access (Kubectl, kubeconfig, and permissions)<br>
 ✅ Containerize Application (Dockerfile, multi-stage builds for optimization)<br>
@@ -7,15 +7,15 @@
 ✅ Enable RBAC (Role-Based Access Control)<br>
 ✅ Set up Observability (Logging & Monitoring)<br>
 
-2. Deployment Strategies in Kubernetes
-Choose an appropriate method:
+2. Deployment Strategies in Kubernetes<br>
+Choose an appropriate method:<br>
 ✅ Deployments - For stateless applications<br>
 ✅ StatefulSets - For stateful applications (DBs, message queues)<br>
 ✅ DaemonSets - For per-node services (log collectors, monitoring agents)<br>
 ✅ Jobs & CronJobs - For batch processing & scheduled tasks<br>
 
-3. Define Kubernetes Objects for Deployment
-Pod-Level Configurations
+3. Define Kubernetes Objects for Deployment<br>
+Pod-Level Configurations<br>
 ✅ PodSecurityContext (Restrict privileged mode, set UID/GID, read-only filesystem)<br>
 ✅ SecurityContext (Drop privileges, enable AppArmor/SELinux profiles)<br>
 ✅ Resource Requests & Limits (Ensure CPU/memory optimization)<br>
@@ -63,7 +63,7 @@ spec:
 
 
 
-Networking & Ingress
+Networking & Ingress<br>
 ✅ Service (ClusterIP, NodePort, LoadBalancer) (Internal & external access)<br>
 ✅ Ingress (NGINX, Traefik, Gateway API) (Path-based & host-based routing)<br>
 ✅ Network Policies (Restrict pod-to-pod & external communication)<br>
@@ -82,7 +82,7 @@ spec:
     - Egress
 ```
     
-Storage Management
+Storage Management<br>
 ✅ Persistent Volume (PV) & Persistent Volume Claim (PVC) (For stateful apps)<br>
 ✅ StorageClass (Choose appropriate backend: local, AWS EBS, Azure Disk, NFS)<br>
 ✅ VolumeMounts & EmptyDir (For ephemeral & shared storage)<br>
@@ -101,7 +101,7 @@ spec:
       storage: 1Gi
 ```
 
-Resource Optimization
+Resource Optimization<br>
 ✅ Horizontal Pod Autoscaler (HPA) (Scale based on CPU/memory)<br>
 ✅ Vertical Pod Autoscaler (VPA) (Automatically adjust pod resources)<br>
 ✅ Cluster Autoscaler (Auto-scale nodes based on load)<br>
@@ -125,7 +125,7 @@ spec:
           averageUtilization: 70
 ```
 
-Access Management & Security
+Access Management & Security<br>
 ✅ RBAC (Roles & RoleBindings) (Restrict user and service access)<br>
 ✅ ServiceAccount (Use dedicated accounts for workloads)<br>
 ✅ PodSecurityPolicy (Restrict privileged containers)<br>
@@ -144,7 +144,7 @@ data:
   DB_PASSWORD: bXlwYXNzd29yZA==  # Base64 encoded
   
   ```
-Cluster-Wide Policies & Quotas
+Cluster-Wide Policies & Quotas<br>
 ✅ LimitRanges (Set default CPU/memory for pods)<br>
 ✅ ResourceQuota (Enforce namespace-level quotas)<br>
 ✅ PodPriority (Prioritize critical workloads)<br>
@@ -163,7 +163,7 @@ spec:
     limits.memory: "8Gi"
 ```
     
-4. Security Best Practices
+4. Security Best Practices<br>
 ✅ Use Distroless or Alpine Base Images<br>
 ✅ Enable Pod Security Admission (PSA) Policies<br>
 ✅ Enable Audit Logging<br>
@@ -171,13 +171,13 @@ spec:
 ✅ Implement Egress Restrictions<br>
 ✅ Use Istio or Linkerd for Service Mesh (mTLS, observability)<br>
 
-5. Monitoring & Observability
+5. Monitoring & Observability<br>
 ✅ Centralized Logging (EFK, Loki, Fluentd, Datadog)<br>
 ✅ Metrics & Alerts (Prometheus, Grafana, AlertManager)<br>
 ✅ Tracing (Jaeger, OpenTelemetry)<br>
 ✅ Node Monitoring (Kubelet, cAdvisor)<br>
 
-6. CI/CD & Deployment Strategies
+6. CI/CD & Deployment Strategies<br>
 ✅ Use GitOps (ArgoCD, FluxCD)<br>
 ✅ Canary Deployments (Istio, Flagger)<br>
 ✅ Blue-Green Deployments (Multiple services with traffic shifting)<br>
@@ -199,7 +199,7 @@ spec:
       maxSurge: 1
 ```
 
-7. Backup & Disaster Recovery
+7. Backup & Disaster Recovery<br>
 ✅ Velero for Cluster Backups<br>
 ✅ Database Backups & Snapshots<br>
 ✅ Multi-Region Deployment for High Availability<br>
@@ -227,7 +227,7 @@ spec:
  
  # Kubernetes Deployment Checklist
 
-## 1. Pre-Requisites
+## 1. Pre-Requisites<br>
 ✅ Set up Kubernetes Cluster (Managed or self-hosted)<br>
 ✅ Ensure Cluster Access (Kubectl, kubeconfig, and permissions)<br>
 ✅ Containerize Application (Dockerfile, multi-stage builds for optimization)<br>
@@ -236,16 +236,16 @@ spec:
 ✅ Enable RBAC (Role-Based Access Control)<br>
 ✅ Set up Observability (Logging & Monitoring)<br>
 
-## 2. Deployment Strategies in Kubernetes
+## 2. Deployment Strategies in Kubernetes<br>
 Choose an appropriate method:
 ✅ Deployments - For stateless applications<br>
 ✅ StatefulSets - For stateful applications (DBs, message queues)<br>
 ✅ DaemonSets - For per-node services (log collectors, monitoring agents)<br>
 ✅ Jobs & CronJobs - For batch processing & scheduled tasks<br>
 
-## 3. Define Kubernetes Objects for Deployment
+## 3. Define Kubernetes Objects for Deployment<br>
 
-### Pod-Level Configurations
+### Pod-Level Configurations<br>
 ✅ PodSecurityContext (Restrict privileged mode, set UID/GID, read-only filesystem)<br>
 ✅ SecurityContext (Drop privileges, enable AppArmor/SELinux profiles)<br>
 ✅ Resource Requests & Limits (Ensure CPU/memory optimization)<br>
@@ -291,7 +291,7 @@ spec:
         periodSeconds: 15
 ```
 
-### Networking & Ingress
+### Networking & Ingress<br>
 ✅ Service (ClusterIP, NodePort, LoadBalancer) (Internal & external access)<br>
 ✅ Ingress (NGINX, Traefik, Gateway API) (Path-based & host-based routing)<br>
 ✅ Network Policies (Restrict pod-to-pod & external communication)<br>
@@ -309,7 +309,7 @@ spec:
     - Egress
 ```
 
-### Storage Management
+### Storage Management<br>
 ✅ Persistent Volume (PV) & Persistent Volume Claim (PVC) (For stateful apps)<br>
 ✅ StorageClass (Choose appropriate backend: local, AWS EBS, Azure Disk, NFS)<br>
 ✅ VolumeMounts & EmptyDir (For ephemeral & shared storage)<br>
@@ -327,7 +327,7 @@ spec:
       storage: 1Gi
 ```
 
-### Resource Optimization
+### Resource Optimization<br>
 ✅ Horizontal Pod Autoscaler (HPA) (Scale based on CPU/memory)<br>
 ✅ Vertical Pod Autoscaler (VPA) (Automatically adjust pod resources)<br>
 ✅ Cluster Autoscaler (Auto-scale nodes based on load)<br>
@@ -366,7 +366,7 @@ data:
   DB_PASSWORD: bXlwYXNzd29yZA==  # Base64 encoded
 ```
 
-### Cluster-Wide Policies & Quotas
+### Cluster-Wide Policies & Quotas<br>
 ✅ LimitRanges (Set default CPU/memory for pods)<br>
 ✅ ResourceQuota (Enforce namespace-level quotas)<br>
 ✅ PodPriority (Prioritize critical workloads)<br>
@@ -385,7 +385,7 @@ spec:
     limits.memory: "8Gi"
 ```
 
-## 4. Security Best Practices
+## 4. Security Best Practices<br>
 ✅ Use Distroless or Alpine Base Images<br>
 ✅ Enable Pod Security Admission (PSA) Policies<br>
 ✅ Enable Audit Logging<br>
@@ -393,13 +393,13 @@ spec:
 ✅ Implement Egress Restrictions<br>
 ✅ Use Istio or Linkerd for Service Mesh (mTLS, observability)<br>
 
-## 5. Monitoring & Observability
+## 5. Monitoring & Observability<br>
 ✅ Centralized Logging (EFK, Loki, Fluentd, Datadog)<br>
 ✅ Metrics & Alerts (Prometheus, Grafana, AlertManager)<br>
 ✅ Tracing (Jaeger, OpenTelemetry)<br>
 ✅ Node Monitoring (Kubelet, cAdvisor)<br>
 
-## 6. CI/CD & Deployment Strategies
+## 6. CI/CD & Deployment Strategies<br>
 ✅ Use GitOps (ArgoCD, FluxCD)<br>
 ✅ Canary Deployments (Istio, Flagger)<br>
 ✅ Blue-Green Deployments (Multiple services with traffic shifting)<br>
@@ -419,12 +419,12 @@ spec:
       maxSurge: 1
 ```
 
-## 7. Backup & Disaster Recovery
+## 7. Backup & Disaster Recovery<br>
 ✅ Velero for Cluster Backups<br>
 ✅ Database Backups & Snapshots<br>
 ✅ Multi-Region Deployment for High Availability<br>
 
-## Final Checklist Before Deployment
+## Final Checklist Before Deployment<br>
 ✅ Containerized Application is Ready<br>
 ✅ Docker Image is Secure & Stored in Registry<br>
 ✅ Manifests are Defined for All Required Resources<br>
