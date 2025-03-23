@@ -1,0 +1,98 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: traefik-network-policy
+  namespace: traefik
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/instance: traefik-traefik
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:
+    - namespaceSelector:   
+        matchLabels:
+          name: mycas
+      podSelector:         
+        matchLabels:
+          app: mycas-webapp
+  - from:
+    - namespaceSelector:   
+        matchLabels:
+          name: mycas
+      podSelector:         
+        matchLabels:
+          app: mycas-webapp2
+    ports:
+      - protocol: TCP
+        port: 8080
+      - protocol: TCP
+        port: 30929
+        
+  - from:
+    - ipBlock:
+        cidr: 192.168.56.0/24 
+    ports:
+      - protocol: TCP
+        port: 30929
+        
+  - from:
+    - ipBlock:
+        cidr: 192.168.56.0/24 
+    ports:
+      - protocol: TCP
+        port: 8080
+  - from:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+    ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+  egress:
+  - to:
+    - namespaceSelector:   
+        matchLabels:
+          name: mycas
+      podSelector:         
+        matchLabels:
+          app: mycas-webapp
+    - namespaceSelector:   
+        matchLabels:
+          name: mycas
+      podSelector:         
+        matchLabels:
+          app: mycas-webapp2
+      
+    ports:
+        - protocol: TCP
+          port: 8080
+        - protocol: TCP
+          port: 30929
+           
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: kube-system
+    ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53
+  - to:
+    - ipBlock:
+        cidr: 192.168.56.0/24 
+    ports:
+      - protocol: TCP
+        port: 30929
+        
+  - to:
+    - ipBlock:
+        cidr: 192.168.56.0/24  
+    ports:
+      - protocol: TCP
+        port: 8080

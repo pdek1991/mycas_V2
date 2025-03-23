@@ -1,0 +1,75 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: mycas-webapp2
+  name: mycas-webapp2
+  namespace: mycas
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mycas-webapp2
+  template:
+    metadata:
+      labels:
+        app: mycas-webapp2
+      name: mycas-webapp2
+    spec:
+      containers:
+      - command:
+        - /bin/sh
+        - -c
+        - sleep 1d
+        env:
+        - name: DB_PASS
+          valueFrom:
+            secretKeyRef:
+              key: DB_PASS
+              name: mycas-secret
+        envFrom:
+        - configMapRef:
+            name: mycas-config
+        image: pdek1991/mycas_webapp:v2
+        imagePullPolicy: IfNotPresent
+        name: mycas-webapp2
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            cpu: 200m
+            memory: 512Mi
+          requests:
+            cpu: 100m
+            memory: 256Mi
+
+
+---
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mycas-webapp2
+  namespace: mycas
+spec:
+  clusterIP: 10.103.76.107
+  clusterIPs:
+  - 10.103.76.107
+  externalTrafficPolicy: Cluster
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - nodePort: 31311
+    port: 80
+    protocol: TCP
+    targetPort: 8080
+  selector:
+    app: mycas-webapp2
+  sessionAffinity: None
+  type: NodePort
+status:
+  loadBalancer: {}

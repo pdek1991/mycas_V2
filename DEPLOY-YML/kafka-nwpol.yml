@@ -1,0 +1,53 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: kafka-network-policy
+  namespace: mycas
+spec:
+  podSelector:
+    matchLabels:
+      app: kafka
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:   
+    - namespaceSelector:
+        matchLabels:
+          app: mycas
+      podSelector:
+        matchExpressions:
+        - key: app
+          operator: In
+          values: ["zookeeper", "mycas-webapp", "mycas-webapp2", "mycas-emmg"]
+  - from: 
+    - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+    ports:
+      - protocol: UDP
+        port: 53
+      - protocol: TCP
+        port: 53
+        
+      
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          app: mycas
+      podSelector:
+        matchExpressions:
+        - key: app
+          operator: In
+          values: ["zookeeper", "mycas-webapp", "mycas-webapp2", "mycas-emmg"]
+  - to:
+    - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+    ports:
+      - protocol: UDP
+        port: 53
+      - protocol: TCP
+        port: 53
+        

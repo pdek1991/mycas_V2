@@ -16,10 +16,13 @@ spec:
       labels:
         app: mycas-client
     spec:
+      priorityClassName: low
       containers:
         - name: mycas-client
           image: pdek1991/mycas_client:v2
+
 #          imagePullPolicy: Always
+
           envFrom:
             - configMapRef:
                 name: mycas-config
@@ -30,6 +33,7 @@ spec:
                   name: mycas-secret
                   key: DB_PASS
 #          command: ["/bin/sh", "-c", "sleep 1d"]
+          
           resources:
             requests:
               cpu: "50m"      
@@ -37,6 +41,7 @@ spec:
             limits:
               cpu: "50m"      
               memory: "128Mi"  
+
 ---
 
 apiVersion: v1
@@ -54,3 +59,4 @@ spec:
   selector:
     app: mycas-client
   type: ClusterIP
+

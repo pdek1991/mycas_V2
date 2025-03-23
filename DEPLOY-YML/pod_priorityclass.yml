@@ -1,0 +1,25 @@
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: high
+value: 9999
+globalDefault: false
+
+---
+
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: medium
+value: 999
+globalDefault: true
+description: "This priority class name is used for all pods that do not have priorityclass defined based on globalDEfault: true. only 1 prirityclass with globalDEfault: true is allowd"
+
+---
+
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata:
+  name: low
+value: 99
+globalDefault: false
