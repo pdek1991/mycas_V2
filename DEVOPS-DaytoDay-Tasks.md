@@ -59,13 +59,13 @@
 
 ## **🔸 Phase 3: Testing & Staging (Agile/SDLC: Testing/Deployment)**
 ### **DevOps Role:**
-✅ Provision and configure the **staging environment**, mirroring production.
-✅ Implement **automated deployment** to the staging environment.
-✅ Conduct **performance testing, load testing, and security testing**.
-✅ Monitor **staging environment** for performance and stability.
-✅ Implement **Blue/Green Deployments or Canary Releases**.
-✅ Refine the **CI/CD pipeline** based on testing results.
-✅ Implement **Observability tools and dashboards**.
+✅ Provision and configure the **staging environment**, mirroring production.<br>
+✅ Implement **automated deployment** to the staging environment.<br>
+✅ Conduct **performance testing, load testing, and security testing**.<br>
+✅ Monitor **staging environment** for performance and stability.<br>
+✅ Implement **Blue/Green Deployments or Canary Releases**.<br>
+✅ Refine the **CI/CD pipeline** based on testing results.<br>
+✅ Implement **Observability tools and dashboards**.<br>
 
 ### **Steps:**
 - **Staging Environment Setup:** Use **IaC to provision staging**.
@@ -86,14 +86,14 @@
 
 ## **🔸 Phase 4: Production Deployment & Monitoring (Agile/SDLC: Deployment/Maintenance)**
 ### **DevOps Role:**
-✅ Automate **production deployments**.
-✅ Monitor **performance, availability, and security**.
-✅ Implement **alerting and incident response**.
-✅ Perform **post-deployment validation and smoke tests**.
-✅ Continuously **improve CI/CD pipelines**.
-✅ Implement **disaster recovery and backup** strategies.
-✅ Conduct **regular security audits and vulnerability assessments**.
-✅ Analyze logs and **optimize cloud costs**.
+✅ Automate **production deployments**.<br>
+✅ Monitor **performance, availability, and security**.<br>
+✅ Implement **alerting and incident response**.<br>
+✅ Perform **post-deployment validation and smoke tests**.<br>
+✅ Continuously **improve CI/CD pipelines**.<br>
+✅ Implement **disaster recovery and backup** strategies.<br>
+✅ Conduct **regular security audits and vulnerability assessments**.<br>
+✅ Analyze logs and **optimize cloud costs**.<br>
 
 ### **Steps:**
 - **Production Deployment Automation:** Deploy via **progressive rollouts**.
@@ -114,15 +114,15 @@
 ---
 
 # **Best Practices**
-✅ **Infrastructure as Code (IaC)**: Manage infrastructure consistently.
-✅ **Continuous Integration/Continuous Deployment (CI/CD)**: Automate everything.
-✅ **Containerization & Orchestration**: Use **Docker & Kubernetes**.
-✅ **Monitoring & Observability**: Implement **Grafana, ELK, OpenTelemetry**.
-✅ **Security Automation**: Integrate **security scanning in CI/CD**.
-✅ **Collaboration & Communication**: Work closely with **development & security teams**.
-✅ **Immutable Infrastructure**: Avoid **manual changes in production**.
-✅ **Disaster Recovery Planning**: Regularly **test failover strategies**.
-✅ **Cost Optimization**: Regularly review and optimize **cloud costs**.
-✅ **Shift Left Security**: Implement **security checks early in development**.
+✅ **Infrastructure as Code (IaC)**: Manage infrastructure consistently.<br>
+✅ **Continuous Integration/Continuous Deployment (CI/CD)**: Automate everything.<br>
+✅ **Containerization & Orchestration**: Use **Docker & Kubernetes**.<br>
+✅ **Monitoring & Observability**: Implement **Grafana, ELK, OpenTelemetry**.<br>
+✅ **Security Automation**: Integrate **security scanning in CI/CD**.<br>
+✅ **Collaboration & Communication**: Work closely with **development & security teams**.<br>
+✅ **Immutable Infrastructure**: Avoid **manual changes in production**.<br>
+✅ **Disaster Recovery Planning**: Regularly **test failover strategies**.<br>
+✅ **Cost Optimization**: Regularly review and optimize **cloud costs**.<br>
+✅ **Shift Left Security**: Implement **security checks early in development**.<br>
 
 
