@@ -16,6 +16,7 @@ spec:
       labels:
         app: mycas-webapp
     spec:
+      priorityClassName: medium
       containers:
         - name: mycas-webapp
           image: pdek1991/mycas_webapp:v2
@@ -41,12 +42,21 @@ spec:
               memory: "512Mi" 
           ports:
             - containerPort: 8080  # Flask default port
-
+          startupProbe:
+            tcpSocket:
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
           livenessProbe:
             httpGet:
               path: /health
               port: 8080
-              
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080      
             initialDelaySeconds: 5
             periodSeconds: 10
 

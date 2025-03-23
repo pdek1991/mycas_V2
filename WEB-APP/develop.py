@@ -23,7 +23,7 @@ new_devices = 0
 #2025#bootstrap_servers = '192.168.56.112:9092'
 
 db_user = os.getenv("DB_USER", "omi_user").strip()
-db_pass = os.getenv("DB_PASS").strip()		##SECRET
+db_pass = os.getenv("DB_PASS").strip()          ##SECRET
 db_host = os.getenv("HOST", "mycas-mysql-0.mysql.mycas").strip()
 db_name = os.getenv("DB_NAME").strip()
 db_port = int(os.getenv("DB_PORT", 3306))
@@ -93,12 +93,12 @@ connection_pool = mysql.connector.pooling.MySQLConnectionPool(pool_name="my_pool
 def index():
     return render_template('index.html')
 @app.route('/generate_osm2', methods=['GET', 'POST'])
-def generate_osm():
+def generate_osm2():
     message_id = request.form['message_id']
     message_text = request.form['message_text']
     device_id = request.form['device_id']
     expiry = request.form['expiry']
-    topic = kafka_topic 
+    topic = kafka_topic
     emmtype = '44'
     message = f"{device_id}:{message_id}:{message_text}:{emmtype}:{expiry}"
     try:
@@ -122,12 +122,11 @@ def generate_osm():
     flash('Message sent successfully! from V2', 'success')
     flash_messages = json.dumps(dict(get_flashed_messages(with_categories=True)))
     app_logger.info(f"Response:{flash_messages}")
-    #return render_template('index.html/main', flash_messages=flash_messages)
     return redirect(url_for('index'))
     #return 'Message saved successfully', 200
-    
+
 @app.route('/addentitlement2', methods=['GET', 'POST'])
-def add_entitlement():
+def add_entitlement2():
     device_id = request.form['device_id']
     package_ids = request.form['package_ids'].split(":")
     expiry = request.form['expiry']
@@ -156,15 +155,15 @@ def add_entitlement():
     flash('Entitlement added successfully! from V2', 'success')
     flash_messages = json.dumps(dict(get_flashed_messages(with_categories=True)))
     app_logger.info(f"Response: {flash_messages}")
-    #return render_template('index.html/main', flash_messages=flash_messages)
     return redirect(url_for('index'))
+
 @app.route('/device_keys2', methods=['GET', 'POST'])
-def device_keys():
+def device_keys2():
     global new_devices
     #new_devices = 0
     device_id = request.form['device_id']
     bskeys = request.form['bskeys']
-    topic = kafka_topic  
+    topic = kafka_topic
     emmtype = '10'
     expiry = '2037-12-31'
     message = f"{device_id}:{bskeys}:{emmtype}:{expiry}"
@@ -194,9 +193,7 @@ def device_keys():
     flash('Devices added successfully! from V2', 'success')
     flash_messages = json.dumps(dict(get_flashed_messages(with_categories=True)))
     app_logger.info(f"Response: {flash_messages}")
-    #return render_template('index.html', flash_messages=flash_messages)
     return redirect(url_for('index'))
-
     #return 'Devices added successfully', 200
 
 @app.route('/status', methods=['GET'])
@@ -231,3 +228,4 @@ def search():
 if __name__ == '__main__':
     #app.run()
     app.run(host='0.0.0.0', port='8080')
+

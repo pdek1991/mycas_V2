@@ -1,0 +1,55 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: emmg-network-policy
+  namespace: mycas
+spec:
+  podSelector:
+    matchLabels:
+      app: mycas-emmg
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:   
+    - namespaceSelector:
+        matchLabels:
+          app: mycas
+      podSelector:
+        matchExpressions:
+        - key: app
+          operator: In
+          values: ["mycas-mysql", "kafka"]
+    ports:
+        - protocol: TCP
+          port: 9092
+        - protocol: TCP
+          port: 9093
+        - protocol: TCP
+          port: 3306
+
+        
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          app: mycas
+      podSelector:
+        matchExpressions:
+        - key: app
+          operator: In
+          values: ["mycas-mysql", "kafka"]
+    ports:
+        - protocol: TCP
+          port: 9092
+        - protocol: TCP
+          port: 9093
+        - protocol: TCP
+          port: 3306
+  - to:  
+        - namespaceSelector: {}
+    ports:
+        - protocol: UDP
+          port: 53
+        - protocol: TCP
+          port: 53

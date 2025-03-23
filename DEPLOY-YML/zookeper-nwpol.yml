@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: zookeper-network-policy
+  namespace: mycas
+spec:
+  podSelector:
+    matchLabels:
+      app: zookeeper
+  policyTypes:
+  - Ingress
+  - Egress
+  ingress:
+  - from:   
+    - namespaceSelector:
+        matchLabels:
+          app: mycas
+      podSelector:
+        matchLabels:
+          app: kafka   
+  - from:
+    - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+    ports:
+      - protocol: UDP
+        port: 53
+      - protocol: TCP
+        port: 53     
+
+  egress:
+  - to:
+    - namespaceSelector:
+        matchLabels:
+          app: mycas
+      podSelector:
+        matchLabels:
+          app: kafka
+  - to:
+    - namespaceSelector:
+            matchLabels:
+              kubernetes.io/metadata.name: kube-system
+    ports:
+      - protocol: UDP
+        port: 53
+      - protocol: TCP
+        port: 53

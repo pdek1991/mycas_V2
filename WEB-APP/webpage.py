@@ -43,7 +43,7 @@ app.debug = True
 
 
 logging.basicConfig(format='%(asctime)s.%(msecs)03d %(levelname)-8s %(message)s', datefmt='%d-%m-%Y:%H:%M:%S', level=logging.DEBUG,
-                        handlers=[TimedRotatingFileHandler(filename=r'.\Logs\mycas.txt', backupCount=10, when='midnight', interval=1)])
+                        handlers=[TimedRotatingFileHandler(filename=r'./Logs/mycas.txt', backupCount=10, when='midnight', interval=1)])
 logger = logging.getLogger(__name__)
 
 flask_logger = logging.getLogger('werkzeug')

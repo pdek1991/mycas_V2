@@ -31,6 +31,7 @@ spec:
           volumeMounts:
             - name: config
               mountPath: /mnt/config
+      priorityClassName: high
       containers:
         - name: mycas-mysql
           image: mysql:8.0
@@ -49,6 +50,7 @@ spec:
                 secretKeyRef:
                   name: secret-mysql
                   key: repl-password
+          
           volumeMounts:
             - name: config
               mountPath: /etc/mysql/conf.d
