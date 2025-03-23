@@ -25,7 +25,6 @@ Pod-Level Configurations
 ✅ Pod Disruption Budget (PDB) (Ensure availability during disruptions)
 
 Example:
-
 ```
 apiVersion: v1
 kind: Pod
@@ -59,7 +58,9 @@ spec:
           path: /healthz
           port: 8080
         initialDelaySeconds: 10
-        periodSeconds: 15```
+        periodSeconds: 15
+```
+
 
 
 Networking & Ingress
@@ -79,7 +80,7 @@ spec:
   policyTypes:
     - Ingress
     - Egress
-    ```
+```
     
 Storage Management
 ✅ Persistent Volume (PV) & Persistent Volume Claim (PVC) (For stateful apps)
@@ -87,7 +88,6 @@ Storage Management
 ✅ VolumeMounts & EmptyDir (For ephemeral & shared storage)
 
 Example:
-
 ```
 apiVersion: v1
 kind: PersistentVolumeClaim
@@ -98,7 +98,9 @@ spec:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi```
+      storage: 1Gi
+```
+
 Resource Optimization
 ✅ Horizontal Pod Autoscaler (HPA) (Scale based on CPU/memory)
 ✅ Vertical Pod Autoscaler (VPA) (Automatically adjust pod resources)
@@ -158,7 +160,8 @@ spec:
     requests.cpu: "2"
     requests.memory: "4Gi"
     limits.cpu: "4"
-    limits.memory: "8Gi" ```
+    limits.memory: "8Gi"
+```
     
 4. Security Best Practices
 ✅ Use Distroless or Alpine Base Images
@@ -294,7 +297,7 @@ spec:
 ✅ Network Policies (Restrict pod-to-pod & external communication)
 ✅ Pod DNS Configuration (Use CoreDNS for service discovery)
 
-```yaml
+```
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
