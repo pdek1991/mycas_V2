@@ -16,7 +16,6 @@ spec:
         app: mycas-webapp2
       name: mycas-webapp2
     spec:
-      serviceAccountName: mycas-sa
       containers:
       - command:
         - /bin/sh

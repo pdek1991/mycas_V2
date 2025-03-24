@@ -16,6 +16,8 @@ spec:
       labels:
         app: mycas-emmg
     spec:
+      serviceAccountName: mycas-sa
+      priorityClassName: low
       containers:
         - name: mycas-emmg
           image: pdek1991/mycas_emmg:v2

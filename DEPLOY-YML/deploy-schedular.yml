@@ -17,6 +17,7 @@ spec:
         app: mycas-schedular
     spec:
       priorityClassName: low
+      serviceAccountName: mycas-sa
       containers:
         - name: mycas-schedular
           image: pdek1991/mycas_schedular:v2

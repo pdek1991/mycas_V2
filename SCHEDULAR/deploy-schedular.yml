@@ -16,6 +16,7 @@ spec:
       labels:
         app: mycas-schedular
     spec:
+      priorityClassName: low
       containers:
         - name: mycas-schedular
           image: pdek1991/mycas_schedular:v2
@@ -30,12 +31,12 @@ spec:
                   name: mycas-secret
                   key: DB_PASS
           #command: ["/bin/sh", "-c", "sleep 1d"]
+          
           resources:
             requests:
               cpu: "50m"      
               memory: "128Mi"  
             limits:
               cpu: "50m"     
-
               memory: "128Mi" 
 

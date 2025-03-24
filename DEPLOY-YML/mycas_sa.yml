@@ -1,0 +1,41 @@
+
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: mycas-sa
+  namespace: mycas
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: mycas-sa-role
+  namespace: mycas  # Change this if using another namespace
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]  # Allow pod discovery
+  - apiGroups: [""]
+    resources: ["configmaps"]
+    verbs: ["get", "list"]  # Allow reading ConfigMaps
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list"]  # Allow reading Secrets (USE WITH CAUTION)
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: mycas-sa-binding
+  namespace: mycas
+subjects:
+  - kind: ServiceAccount
+    name: mycas-sa  # The service account used by your pods
+    namespace: mycas
+roleRef:
+  kind: Role
+  name: mycas-sa-role
+  apiGroup: rbac.authorization.k8s.io
+

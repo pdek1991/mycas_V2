@@ -16,6 +16,7 @@ spec:
       labels:
         app: mycas-webapp
     spec:
+      serviceAccountName: mycas-sa
       priorityClassName: medium
       containers:
         - name: mycas-webapp

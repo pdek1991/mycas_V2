@@ -1,0 +1,38 @@
+apiVersion: audit.k8s.io/v1
+kind: Policy
+omitStages:
+  - "RequestReceived"
+rules:
+  # Log all ServiceAccount actions at RequestResponse level
+  - level: RequestResponse
+    resources:
+      - group: ""
+        resources: ["serviceaccounts", "serviceaccounts/token"]
+
+  # Log pod changes at RequestResponse level
+  - level: RequestResponse
+    resources:
+      - group: ""
+        resources: ["pods"]
+
+  # Don't log watch requests by the "system:kube-proxy" on endpoints or services
+  - level: None
+    users: ["system:kube-proxy"]
+    verbs: ["watch"]
+    resources:
+      - group: "" # core API group
+        resources: ["endpoints", "services"]
+
+  # Don't log authenticated requests to certain non-resource URL paths.
+  - level: None
+    userGroups: ["system:authenticated"]
+    nonResourceURLs:
+      - "/api*" # Wildcard matching.
+      - "/version"
+
+  # Log ConfigMap changes in the 'mycas' namespace
+  - level: Request
+    resources:
+      - group: "" # core API group
+        resources: ["configmaps"]
+    namespaces: ["mycas"]

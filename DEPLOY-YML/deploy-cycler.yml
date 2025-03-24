@@ -16,6 +16,7 @@ spec:
       labels:
         app: mycas-cycler
     spec:
+      serviceAccountName: mycas-sa
       priorityClassName: low
       containers:
         - name: mycas-cycler

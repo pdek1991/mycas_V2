@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 8px;
+            width: 250px;
+        }
+        input[type="submit"] {
+            padding: 8px 15px;
+            background-color: #ff2e44;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        table {
+            width: 50%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Search for Entitlements</h2>
+    
+    <form method="POST">
+        <label for="device_id">Enter Device ID:</label>
+        <input type="text" id="device_id" name="device_id" required>
+        <input type="submit" value="Search">
+    </form>
+
+    {% if results is not none %}
+        <h3>Search Results</h3>
+        {% if results %}
+            <table>
+                <tr>
+                    <th>Package ID</th>
+                    <th>Expiry</th>
+                </tr>
+                {% for row in results %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        {% else %}
+            <p>No results found.</p>
+        {% endif %}
+    {% endif %}
+
+</body>
+</html>
