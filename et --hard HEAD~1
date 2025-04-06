@@ -1,0 +1,115 @@
+* [33mf26a871[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mfeature[m[33m, [m[1;31morigin/feature[m[33m)[m Initial commit
+* [33ma1d6fed[m Update K8s-deployment-checklist.md
+* [33md005119[m Update K8s-deployment-checklist.md
+* [33m6cb0ff9[m Update K8s-deployment-checklist.md
+* [33mf91deef[m Update K8s-deployment-checklist.md
+* [33m0d785c5[m Update K8s-deployment-checklist.md
+* [33m9496548[m Update DEVOPS-DaytoDay-Tasks.md
+* [33mc607ce6[m Update DEVOPS-DaytoDay-Tasks.md
+* [33mec0c6e0[m Update DEVOPS-DaytoDay-Tasks.md
+* [33m6a38bff[m Update DEVOPS-DaytoDay-Tasks.md
+* [33mda10940[m Update K8s-deployment-checklist.md
+* [33m741f00c[m Added daily tasks and deployment checklist
+* [33m48fb707[m modified index for 2nd webapp added probes and pod priority and modified endpoints in webapp2
+*   [33m7c3dcb0[m Merge pull request #8 from pdek1991/feature
+[32m|[m[33m\[m  
+[32m|[m *   [33m56e6c0b[m Merge pull request #6 from pdek1991/main
+[32m|[m [34m|[m[32m\[m  
+[32m|[m [34m|[m[32m/[m  
+[32m|[m[32m/[m[34m|[m   
+* [34m|[m   [33m9ff4b96[m Merge pull request #5 from pdek1991/kubemaster
+[36m|[m[1;31m\[m [34m\[m  
+[36m|[m * [34m\[m   [33mf0eecc0[m Merge branch 'main' into kubemaster
+[36m|[m [1;32m|[m[36m\[m [34m\[m  
+[36m|[m [1;32m|[m[36m/[m [34m/[m  
+[36m|[m[36m/[m[1;32m|[m [34m|[m   
+* [1;32m|[m [34m|[m   [33m4be7950[m Merge pull request #4 from pdek1991/feature
+[1;34m|[m[34m\[m [1;32m\[m [34m\[m  
+[1;34m|[m [34m|[m [1;32m|[m[34m/[m  
+[1;34m|[m [34m|[m[34m/[m[1;32m|[m   
+[1;34m|[m * [1;32m|[m   [33m8983c99[m Merge branch 'main' into feature
+[1;34m|[m [1;36m|[m[1;34m\[m [1;32m\[m  
+[1;34m|[m [1;36m|[m[1;34m/[m [1;32m/[m  
+[1;34m|[m[1;34m/[m[1;36m|[m [1;32m|[m   
+* [1;36m|[m [1;32m|[m [33mb509ed4[m Update trivy.yml
+* [1;36m|[m [1;32m|[m [33mcdfdab3[m Delete .github/workflows/pylint.yml
+* [1;36m|[m [1;32m|[m [33m65c9329[m Update pylint.yml
+* [1;36m|[m [1;32m|[m [33mf9f715e[m Update trivy.yml
+* [1;36m|[m [1;32m|[m [33m9707250[m Update trivy.yml
+* [1;36m|[m [1;32m|[m [33m8341293[m Create trivy.yml
+* [1;36m|[m [1;32m|[m [33m504170f[m Create pylint.yml
+* [1;36m|[m [1;32m|[m [33mf9d366f[m Create README2.md
+[31m|[m * [1;32m|[m [33mcab16f8[m sync windows branch
+[31m|[m * [1;32m|[m   [33m2ff9c63[m Merge branch 'feature' of https://github.com/pdek1991/mycas_V2 into feature
+[31m|[m [32m|[m[33m\[m [1;32m\[m  
+[31m|[m [32m|[m * [1;32m\[m   [33m05e9c2f[m Merge pull request #3 from pdek1991/main
+[31m|[m [32m|[m [34m|[m[31m\[m [1;32m\[m  
+[31m|[m [32m|[m[31m_[m[34m|[m[31m/[m [1;32m/[m  
+[31m|[m[31m/[m[32m|[m [34m|[m [1;32m|[m   
+* [32m|[m [34m|[m [1;32m|[m   [33mce896be[m Merge pull request #2 from pdek1991/feature
+[36m|[m[34m\[m [32m\[m [34m\[m [1;32m\[m  
+[36m|[m [34m|[m [32m|[m[34m/[m [1;32m/[m  
+[36m|[m [34m|[m[34m/[m[32m|[m [1;32m|[m   
+* [34m|[m [32m|[m [1;32m|[m   [33mde2ed90[m Merge pull request #1 from pdek1991/feature
+[1;32m|[m[1;33m\[m [34m\[m [32m\[m [1;32m\[m  
+* [1;33m|[m [34m|[m [32m|[m [1;32m|[m [33mad99656[m cycler dbconfig updated and pool size changed to 10
+[1;33m|[m [1;33m|[m [34m|[m * [1;32m|[m [33m4326d57[m added checklist for deploying app
+[1;33m|[m [1;33m|[m [34m|[m[34m/[m [1;32m/[m  
+[1;33m|[m [1;33m|[m * [1;32m/[m [33m50819c3[m schedular updated to run every 2 min
+[1;33m|[m [1;33m|[m[1;33m/[m [1;32m/[m  
+[1;33m|[m * [1;32m|[m [33m4276140[m html templates modified and /search functionality added
+[1;33m|[m * [1;32m|[m [33m8d34fe5[m added fearure branch to optimize code
+[1;33m|[m[1;33m/[m [1;32m/[m  
+* [1;32m|[m [33ma6fbe8d[m[33m ([m[1;32mmain[m[33m)[m ENV reference changed to strip spaces
+* [1;32m|[m [33m6879b77[m Adeed README
+* [1;32m|[m [33m7c67159[m Image version updated in all deployments
+* [1;32m|[m [33m6bc6d0e[m CM and Secrets added in deployment and resources updated
+* [1;32m|[m [33m849cc9c[m adding trivy scan reports
+* [1;32m|[m [33me82de21[m adding trivy scan reports
+[1;33m|[m * [33m1f32cd1[m Create search_form.html
+[1;33m|[m * [33m543927c[m Update index.html
+[1;33m|[m * [33m28583c0[m Update webpage.py
+[1;33m|[m * [33mc5130d2[m Update schedular.py
+[1;33m|[m * [33m7a47bbd[m Update emmg.py
+[1;33m|[m * [33m301d911[m Update stb_client.py
+[1;33m|[m * [33m9bfcd27[m Update cycler.py
+[1;33m|[m * [33m17b6b19[m Delete 15Mar2025_etcd.db
+[1;33m|[m * [33m8a31dd1[m Delete misc/istio-1.25.0 directory
+[1;33m|[m * [33m59d1788[m Data from kube master node
+[1;33m|[m *   [33m1e7c99a[m added Gateway api resources and Traefik controleer
+[1;33m|[m [1;34m|[m[1;33m\[m  
+[1;33m|[m [1;34m|[m[1;33m/[m  
+[1;33m|[m[1;33m/[m[1;34m|[m   
+* [1;34m|[m [33m687b66c[m Added trivy reports
+* [1;34m|[m [33mc81800b[m modified emmg code for db statefulset and kafka and dockerfile updated
+* [1;34m|[m [33m0d1e857[m modified emmg code for db statefulset and kafka and dockerfile updated
+* [1;34m|[m [33m07c80f2[m working Dockerfile
+* [1;34m|[m [33m3f42808[m added yaml file for webapp deployment
+* [1;34m|[m [33md827267[m Kafka configured with topic
+* [1;34m|[m   [33mf9096b8[m Merge branch 'main' of https://github.com/pdek1991/mycas_V2 into main
+[1;36m|[m[31m\[m [1;34m\[m  
+[1;36m|[m * [1;34m|[m [33mc55ee98[m README updated with commands
+[1;36m|[m[1;36m/[m [1;34m/[m  
+* [1;34m|[m [33m1003c8e[m MYSQL with 1 read and 1 write replica deployed as statefulset
+* [1;34m|[m [33m06cf130[m Adding MYSQL statefulset
+* [1;34m|[m [33m6843cf1[m Dockerfiles optimized for size security and image pushed to dockerhub for cycler
+* [1;34m|[m [33mbcf033d[m Dockerfiles optimized for size security and image pushed to dockerhub
+* [1;34m|[m [33m9de2b2e[m Dockerfiles optimized for size security and image pushed to dockerhub
+* [1;34m|[m [33m47d1a2f[m added base codes and Dockerfiles
+ [1;34m/[m  
+* [33m6ffdb1e[m hpa added
+* [33mb6223bc[m added yaml file for webapp deployment
+* [33mfe84bbd[m Kafka configured with topic
+* [33mcff8665[m conflict resolved
+*   [33mf56c104[m Merge branch 'main' of https://github.com/pdek1991/mycas_V2 into main
+[32m|[m[33m\[m  
+[32m|[m * [33m7a7d7b1[m README updated with commands
+* [33m|[m [33m8e7b412[m README Updated
+[33m|[m[33m/[m  
+* [33md4e5c8a[m MYSQL with 1 read and 1 write replica deployed as statefulset
+* [33m8f920fe[m Adding MYSQL statefulset
+* [33m0a7febf[m Dockerfiles optimized for size security and image pushed to dockerhub for cycler
+* [33m5b7e91a[m Dockerfiles optimized for size security and image pushed to dockerhub
+* [33mb4c1e83[m Dockerfiles optimized for size security and image pushed to dockerhub
+* [33me64c443[m added base codes and Dockerfiles
+* [33m51f6e0d[m Initial commit
